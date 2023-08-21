@@ -2,7 +2,7 @@ import { AmbientLight, DirectionalLight } from 'three';
 
 export default class Light {
   constructor(scene) {
-    
+
     this._scene = scene;
     this._init();
   }
@@ -13,7 +13,7 @@ export default class Light {
     this._scene.add(ambientLight);
     Light.ambientLight = ambientLight;
 
-    const directionalLight = new DirectionalLight(0xffffff, 0.56);
+    const directionalLight = new DirectionalLight(0xffffff, 0.7);
     directionalLight.position.set(1, 3, 2); // looks at (0; 0; 0)
     directionalLight.visible = true;
     this._scene.add(directionalLight);

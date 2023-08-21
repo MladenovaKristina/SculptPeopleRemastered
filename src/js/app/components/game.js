@@ -29,20 +29,20 @@ export default class Game {
     this._clicksToStore = ConfigurableParams.getData()["market_details"]["go_to_market_after_x_click"]["value"];
     this._timeToStore = ConfigurableParams.getData()["market_details"]["go_to_market_after_x_time"]["value"];
 
-    this._init();
+    this._cameraController = new CameraController(this._camera.threeCamera);
 
     this.onResize();
+    this._init();
+
     Black.stage.on('resize', this.onResize, this);
   }
 
   _init() {
     this._initUI();
-    this._cameraController = new CameraController(this._camera.threeCamera);
     this._initScene();
   }
 
   start() {
-
     this._startTime = Date.now();
 
     if (ConfigurableParams.isXTime()) {
@@ -50,6 +50,7 @@ export default class Game {
         this._countTime();
       }, 1000);
     }
+
   }
 
   _initUI() {
