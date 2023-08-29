@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import Helpers from "../../helpers/helpers";
 import MoveController from "./move-controller";
-import SceneObjects from "./3d-objects";
 import Environment from "./scenes/scene";
 import ClayScene from "./scenes/scene-clay";
 import MorphScene from "./scenes/scene_morph";
