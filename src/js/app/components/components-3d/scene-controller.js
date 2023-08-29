@@ -8,6 +8,7 @@ import MorphScene from "./scenes/scene_morph";
 import AccesorizeScene from "./scenes/scene-accessories";
 import BodySelectionScene from "./scenes/scene-body";
 import MaterialLoader from "./material_loader";
+
 export default class SceneController extends Object3D {
     constructor(layout2d, renderer, camera) {
         super();
@@ -15,21 +16,20 @@ export default class SceneController extends Object3D {
         this._renderer = renderer;
         this._camera = camera;
         this.init();
-        this.nextScene("clay")
+        this.nextScene("morph")
     }
     init() {
+        this._moveController = new MoveController(this._camera, this._renderer);
+
         this._environment = new Environment();
         this.add(this._environment);
 
-        console.log(this._environment._assets)
-
         this._materialLoader = new MaterialLoader(this._environment._assets)
-        this.add(this._materialLoader);
 
         this._clayScene = new ClayScene(this._environment._assets, this._layout2d);
         this.add(this._clayScene);
 
-        this._morphScene = new MorphScene();
+        this._morphScene = new MorphScene(this._environment._assets, this._moveController, this._environment.flipX);
         this.add(this._morphScene);
 
         this._accessorize = new AccesorizeScene();
@@ -38,10 +38,14 @@ export default class SceneController extends Object3D {
         this._bodySelectScene = new BodySelectionScene();
         this.add(this._bodySelectScene);
     }
-    
+
     nextScene(id) {
         if (id === "clay") {
             this._clayScene.start();
+        }
+        if (id === "morph") {
+            this._layout2d._hideClayHint();
+            this._morphScene.start()
         }
     }
 

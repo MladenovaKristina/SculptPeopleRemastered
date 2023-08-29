@@ -5,10 +5,11 @@ export default class BodySelectionScene extends THREE.Object3D {
         super();
         this.visible = false;
 
-        console.log("Body, visible ", this.visible)
 
     }
-    start() { this.visible = true; }
+    start() {
+        this.visible = true; console.log("Body, visible ", this.visible)
+    }
 
     onDown(x, y) {
 

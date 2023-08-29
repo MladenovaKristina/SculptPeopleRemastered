@@ -63,6 +63,7 @@ export default class Game {
     });
     this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, clayid) => {
       this._sceneController._materialLoader.setClay(clayid);
+      this._sceneController.nextScene("morph")
     });
   }
 

@@ -10,13 +10,22 @@ export default class MaterialLoader {
     }
 
     _initClayMaterial(clayMaterial) {
-        this.clayMaterial=new MeshPhongMaterial()
+        const colors = [
+            ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x')
+            ,
+            ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x')
+            ,
+            ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x')
+        ];
+
+        this.clayMaterial = new MeshPhongMaterial({ color: colors[clayMaterial] })
         this._assets.traverse((child) => {
             const childName = child.name.toLowerCase();
-            if (childName.includes("ear") && !childName.includes("ring") || childName.startsWith("h_") && !childName.includes("hair") && !childName === "h_mask") { child.material = clayMaterial }
-            if (child.material === this.skinMaterial && child.material.color !== clayMaterial.color) {
-                child.material.color.copy(clayMaterial.color);
+            if (childName.includes("ear") && !childName.includes("ring") || childName.startsWith("h_") && !childName.includes("hair") && !childName === "h_mask") {
+                child.material = this.clayMaterial;
+                console.log(child.name)
             }
+
         })
     }
 

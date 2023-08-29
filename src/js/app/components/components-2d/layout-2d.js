@@ -67,11 +67,15 @@ export default class Layout2D extends DisplayObject {
 
     this._refPhoto.x = bb.left + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["x"]);
     this._refPhoto.y = bb.top + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["y"]);
+
     if (this._topText.visible)
       this._refPhoto.y = this._topText.y + this._topText.height + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["y"]);
 
     this._selectHint.x = bb.left;
     this._selectHint.y = Black.stage.centerY;
+
+
+    this._selectHint._text.x = Black.stage.centerX;
 
     this._endScreen.onResize(bb);
 

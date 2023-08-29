@@ -4,7 +4,6 @@ import TWEEN from '@tweenjs/tween.js';
 
 export default class MoveController {
     constructor(camera, renderer) {
-        console.log("movecontroller")
         this._camera = camera;
         this._renderer = renderer;
         this._animations = {

@@ -1,7 +1,7 @@
 import ConfigurableParams from '../../../data/configurable_params';
 import { Tween, Black, DisplayObject, TextField, Ease, Graphics } from '../../../utils/black-engine.module';
 import { TutorialHand } from './tutorial-hand';
-
+import Helpers from '../../helpers/helpers';
 export default class SelectHint extends DisplayObject {
   constructor(position) {
     super();
@@ -14,7 +14,35 @@ export default class SelectHint extends DisplayObject {
 
   onAdded() {
     const bb = Black.stage.bounds;
-    const textValue = 'Choose your clay';
+    const textValue = 'Choose your clay!';
+
+
+    this._text = new TextField(
+      textValue,
+      'Arial',
+      0xffffff,
+      80
+    );
+
+    this._text.weight = 750;
+    this._text.strokeColor = 0x000000;
+    this._text.strokeThickness = 10;
+    if (Helpers.LP(false, true)) {
+      this._text.alignAnchor(0.5, 0.5);
+
+    }
+    else {
+      this._text.alignAnchor(0, 0.5);
+    }
+    this._text.y = Black.stage.centerY - Black.stage.height / 1.5;
+    this._text.x = Black.stage.centerX;
+
+    this.add(this._text);
+
+    this._hand = new TutorialHand();
+
+    this.startX = bb.width / 6;
+    this.offset = Black.stage.bounds.width / 5;
 
     this.clayGroup = new Graphics();
     this.clayGroup.width = bb.width;
@@ -30,47 +58,29 @@ export default class SelectHint extends DisplayObject {
       )];
     const height = 150;
     const spacing = bb.width / 3;
+
     for (let i = 0; i < colors.length; i++) {
       let color = colors[i];
-      console.log(color);
       let clay = new Graphics();
       clay.beginPath();
       clay.fillStyle(color, 1);
-      clay.rect(0, 0, height, height);
+      clay.lineStyle(5, 0x000000);
+      clay.roundedRect(0, 0, height, height, 20);
       clay.fill();
-      clay.alignAnchor(0.5, 0.5)
-      clay.x = spacing / 2 + (spacing * i)
+      clay.stroke();
+      clay.alignAnchor(0, 0.5)
+      clay.x = this.startX / 2 + (spacing * i)
       this.clayGroup.add(clay)
     }
-
-
-    this._text = new TextField(
-      textValue,
-      'Arial',
-      0xffffff,
-      80
-    );
-    this._text.weight = 750;
-    this._text.strokeColor = 0x000000;
-    this._text.strokeThickness = 10;
-    this._text.alignAnchor(0.5, 0.5);
-    this._text.y = Black.stage.centerY - Black.stage.height / 1.5;
-    this._text.x = Black.stage.centerX;
-
-    this.add(this._text);
-
-
-
-    this._hand = new TutorialHand();
-
-    this.startX = 50 + Black.stage.bounds.width / 5;
-    this.offset = Black.stage.bounds.width / 5;
 
     this._hand.x = this.startX;
     this._hand.y = -30;
     this.add(this._hand);
 
     if (ConfigurableParams.getData()['hint']['starting_hint_type']['value'] === 'INFINITY ONLY') this._hand.visible = false;
+  }
+
+  onResize() {
   }
 
   show() {
@@ -86,7 +96,7 @@ export default class SelectHint extends DisplayObject {
 
   _makeStep() {
     const slidetween = new Tween({
-      x: [this.startX, this.startX + this.offset * 3 - 100, this.startX]
+      x: [this.startX, this.startX + this.offset * 3 + this._hand.width / 2, this.startX]
     }, 2, { ease: Ease.linear, delay: 0.5, loop: Infinity });
     this._hand.add(slidetween);
 

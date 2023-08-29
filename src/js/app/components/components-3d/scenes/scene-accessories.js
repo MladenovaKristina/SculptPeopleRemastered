@@ -5,10 +5,11 @@ export default class AccesorizeScene extends THREE.Object3D {
         super();
         this.visible = false;
 
-        console.log("Accesorize, visible ", this.visible)
 
     }
-    start() { this.visible = true; }
+    start() {
+        this.visible = true; console.log("Accesorize, visible ", this.visible)
+    }
 
     onDown(x, y) {
 
