@@ -13,6 +13,7 @@ import CheersText from './cheers-text';
 import Confetti from './confetti';
 import { call } from 'file-loader';
 import SprayCan from './spray';
+import ClayScene from '../components-3d/scenes/scene-clay';
 // works as a main class in 2D playables
 export default class Layout2D extends DisplayObject {
   constructor() {
@@ -20,6 +21,7 @@ export default class Layout2D extends DisplayObject {
 
     this.onPlayBtnClickEvent = 'onPlayBtnClickEvent';
     this.onActionClickEvent = 'onActionClickEvent';
+    this.onSelectFromDockClickEvent = 'onSelectFromDockClickEvent';
 
     this._platform = model.platform;
     this._downloadBtn = null;
@@ -115,7 +117,7 @@ export default class Layout2D extends DisplayObject {
     }
   }
 
-  startHint() {
+  actionHint() {
     this._tutorial.show();
   }
   _showOval() {
@@ -172,6 +174,7 @@ export default class Layout2D extends DisplayObject {
   }
   _startClayHint() {
     this._selectHint.show();
+    this._clayscene = true;
   }
   _hideClayHint() {
     this._selectHint.hide();
@@ -205,11 +208,37 @@ export default class Layout2D extends DisplayObject {
     if (ifDownloadButtonClicked) return true;
 
     this._endScreen.onDown(blackPos.x, blackPos.y);
+
+    this.selectObjecInDock(blackPos.x, blackPos.y)
   }
+
 
   selectSpray(x, y, callback) {
     console.log(x, y, "spray")
     if (callback) callback();
+  }
+
+  selectObjecInDock(x, y) {
+    let selectFrom;
+    if (this.dockScene) {
+      console.log(this._objectsInDock)
+      selectFrom = this._objectsInDock._bg.mChildren;
+    } else { selectFrom = this._selectHint.clayGroup.mChildren }
+
+    for (let i = 0; i < selectFrom.length; i++) {
+      const object = selectFrom[i];
+
+      if (x >= object.x - object.width && x <= object.x + object.width / 2
+        // && y >= object.y && y <= object.y + object.height
+      ) {
+
+        if (object.mTextureName) this.selectedObject = object.mTextureName;
+        else {
+          this.selectedObject = i
+        }
+        this.post('onSelectFromDockClickEvent', this.selectedObject)
+      }
+    }
   }
 
   onMove(x, y) {

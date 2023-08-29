@@ -1,5 +1,5 @@
 import ConfigurableParams from '../../../data/configurable_params';
-import { Tween, Black, DisplayObject, TextField, Ease } from '../../../utils/black-engine.module';
+import { Tween, Black, DisplayObject, TextField, Ease, Graphics } from '../../../utils/black-engine.module';
 import { TutorialHand } from './tutorial-hand';
 
 export default class SelectHint extends DisplayObject {
@@ -13,8 +13,36 @@ export default class SelectHint extends DisplayObject {
   }
 
   onAdded() {
-
+    const bb = Black.stage.bounds;
     const textValue = 'Choose your clay';
+
+    this.clayGroup = new Graphics();
+    this.clayGroup.width = bb.width;
+    this.clayGroup.height = 100;
+    this.add(this.clayGroup)
+
+    const colors = [
+      parseInt(ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x')
+      ),
+      parseInt(ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x')
+      ),
+      parseInt(ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x')
+      )];
+    const height = 150;
+    const spacing = bb.width / 3;
+    for (let i = 0; i < colors.length; i++) {
+      let color = colors[i];
+      console.log(color);
+      let clay = new Graphics();
+      clay.beginPath();
+      clay.fillStyle(color, 1);
+      clay.rect(0, 0, height, height);
+      clay.fill();
+      clay.alignAnchor(0.5, 0.5)
+      clay.x = spacing / 2 + (spacing * i)
+      this.clayGroup.add(clay)
+    }
+
 
     this._text = new TextField(
       textValue,

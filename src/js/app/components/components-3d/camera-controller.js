@@ -16,7 +16,7 @@ export default class CameraController {
     this._updatePositions();
     this._updateTransform();
 
-    this._camera.lookAt(0, 0, 0);
+    this._camera.lookAt(this._camera.position);
   }
 
   _updateTransform() {
@@ -26,11 +26,11 @@ export default class CameraController {
 
   _updatePositions() {
     if (Helpers.LP(false, true)) {
-      this._position = new THREE.Vector3(0, 0, 2);
+      this._position = new THREE.Vector3(0, 0, 1);
 
     }
     else {
-      this._position = new THREE.Vector2(0, 0, 3);
+      this._position = new THREE.Vector3(0, 0.1, 1);
     }
 
   }

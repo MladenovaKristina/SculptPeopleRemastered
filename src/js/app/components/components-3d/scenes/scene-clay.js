@@ -1,15 +1,19 @@
 import * as THREE from "three";
 
 export default class ClayScene extends THREE.Object3D {
-    constructor() {
+    constructor(assets, layout2d) {
         super();
-        this.visible = false;
 
-        console.log("ClayScene, visible ", this.visible)
-
+        this._assets = assets;
+        this._layout2d = layout2d;
     }
-    start() { this.visible = true; }
-
+    start() {
+        this.visible = true;
+        this._init()
+    }
+    _init() {
+        this._layout2d._startClayHint()
+    }
     onDown(x, y) {
 
     }

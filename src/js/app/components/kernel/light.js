@@ -8,12 +8,12 @@ export default class Light {
   }
 
   _init() {
-    const ambientLight = new AmbientLight(0xffffff, 0.8);
+    const ambientLight = new AmbientLight(0xffffff, 1);
     ambientLight.visible = true;
     this._scene.add(ambientLight);
     Light.ambientLight = ambientLight;
 
-    const directionalLight = new DirectionalLight(0xffffff, 0.7);
+    const directionalLight = new DirectionalLight(0xffffff, 2);
     directionalLight.position.set(1, 3, 2); // looks at (0; 0; 0)
     directionalLight.visible = true;
     this._scene.add(directionalLight);
