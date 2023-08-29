@@ -38,7 +38,7 @@ export default class SceneController extends Object3D {
         this._bodySelectScene = new BodySelectionScene();
         this.add(this._bodySelectScene);
     }
-
+    
     nextScene(id) {
         if (id === "clay") {
             this._clayScene.start();

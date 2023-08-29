@@ -61,8 +61,8 @@ export default class Game {
       this._state = STATES.FINAL;
       this.messageDispatcher.post(this.onFinishEvent);
     });
-    this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, clay) => {
-      console.log(clay)
+    this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, clayid) => {
+      this._sceneController._materialLoader.setClay(clayid);
     });
   }
 

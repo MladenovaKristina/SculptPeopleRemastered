@@ -1,3 +1,5 @@
+import ConfigurableParams from "../../../data/configurable_params";
+
 import { MeshPhongMaterial, NormalBlending, Cache, DoubleSide } from "three";
 
 export default class MaterialLoader {
@@ -8,6 +10,7 @@ export default class MaterialLoader {
     }
 
     _initClayMaterial(clayMaterial) {
+        this.clayMaterial=new MeshPhongMaterial()
         this._assets.traverse((child) => {
             const childName = child.name.toLowerCase();
             if (childName.includes("ear") && !childName.includes("ring") || childName.startsWith("h_") && !childName.includes("hair") && !childName === "h_mask") { child.material = clayMaterial }
@@ -78,5 +81,20 @@ export default class MaterialLoader {
             if (childName.includes("teeth")) { child.material = whiteMaterial; }
 
         })
+
+
+    }
+
+    setClay(id) {
+        const colors = [
+            ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x')
+            ,
+            ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x')
+            ,
+            ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x')
+        ];
+
+        console.log(colors[id]);
+        this._initClayMaterial(colors[id])
     }
 }
