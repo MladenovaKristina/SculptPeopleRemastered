@@ -1,11 +1,16 @@
-import * as THREE from "three";
-import Helpers from "../../helpers/helpers";
+import { Vector3, Object3D, Group } from "three";
 import TWEEN from '@tweenjs/tween.js';
 
-export default class MoveController {
+export default class MoveController extends Object3D {
     constructor(camera, renderer) {
+        super();
+        this.visible = true;
         this._camera = camera;
         this._renderer = renderer;
+        this._object = new Group;
+
+        this.add(this._object);
+
         this._animations = {
             sculpt: {
                 tween: null,
@@ -73,9 +78,87 @@ export default class MoveController {
     }
 
 
+    show(moveobject) {
+        console.log("move", moveobject, moveobject.visible)
+        this._object = moveobject;
+
+        this._object.position.set(-5, -5, 5)
+        this._object.visible = true;
+
+        const targetPosition = new Vector3(0, 0, 0);
+
+        this._objectMoveTween = new TWEEN.Tween(this._object.position)
+
+            .to({ x: targetPosition.x, y: targetPosition.y, z: targetPosition.z }, 1500)
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .onComplete(() => {
+                this.idle(this._object)
+            })
+            .start();
+
+        this.animate();
+    }
+
+    idle(obj) {
+        this._object = obj;
+        const duration = 1000;
+        const amplitude = 0.01;
+        const frequency = 2;
+        const _objectRotate = new TWEEN.Tween(this._object.rotation)
+            .to(
+                {
+                    x: this._object.rotation.x + amplitude,
+                    y: this._object.rotation.y - amplitude,
+                },
+                duration * 2
+            )
+            .easing(TWEEN.Easing.Sinusoidal.InOut)
+            .onUpdate(() => {
+                const time = performance.now() / 1000;
+                const angle = Math.sin(time * frequency) * amplitude;
+                this._object.rotation.x = this._object.rotation.x + angle * 2;
+            })
+            .repeat(Infinity)
+            .yoyo(true)
+            .start();
+
+        const _objectRotation = new TWEEN.Tween(this._object.position)
+            .to(
+                {
+                    x: this._object.position.x - amplitude * 2,
+                },
+                duration * 1.3
+            )
+            .easing(TWEEN.Easing.Sinusoidal.InOut)
+            .onUpdate(() => {
+                const time = performance.now() / 1000;
+
+                if (time >= duration / 2) {
+                    this._objectTweenPosition = new TWEEN.Tween(this._object.position.y)
+                        .to(
+                            {
+                                y: this._object.position.y - amplitude
+                            },
+                            duration * 1.2
+                        ).easing(TWEEN.Easing.Sinusoidal.InOut)
+                }
+            })
+            .repeat(Infinity)
+            .yoyo(true)
+            .start();
+
+    }
 
     animate() {
         TWEEN.update();
         requestAnimationFrame(() => this.animate());
+
     }
+
+    //     stopAnimate() {
+    //         if (TWEEN.isPlaying && TWEEN)
+    //             TWEEN.end();
+    //         TWEEN.stop();
+    // 
+    //     }
 }

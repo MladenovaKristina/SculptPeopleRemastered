@@ -1,7 +1,6 @@
 import { Object3D } from "three";
 
 import Helpers from "../../helpers/helpers";
-import MoveController from "./move-controller";
 import Environment from "./scenes/scene";
 import ClayScene from "./scenes/scene-clay";
 import MorphScene from "./scenes/scene_morph";
@@ -10,16 +9,22 @@ import BodySelectionScene from "./scenes/scene-body";
 import MaterialLoader from "./material_loader";
 
 export default class SceneController extends Object3D {
-    constructor(layout2d, renderer, camera) {
+    constructor(layout2d, renderer, camera, cameraController, moveController) {
         super();
-        this._layout2d = layout2d;
-        this._renderer = renderer;
         this._camera = camera;
-        this.init();
+        this._renderer = renderer;
+        this._cameraController = cameraController;
+        this._moveController = moveController;
+        console.log(this._moveController)
+
+        this._layout2d = layout2d;
+    }
+    start() {
+        this.init()
         this.nextScene("morph")
     }
+
     init() {
-        this._moveController = new MoveController(this._camera, this._renderer);
 
         this._environment = new Environment();
         this.add(this._environment);

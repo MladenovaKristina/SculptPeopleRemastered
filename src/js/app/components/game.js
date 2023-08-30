@@ -7,6 +7,7 @@ import CameraController from "./components-3d/camera-controller";
 import SoundsController from "./kernel/soundscontroller";
 import ConfigurableParams from "../../data/configurable_params";
 import SceneController from "./components-3d/scene-controller";
+import MoveController from "./components-3d/move-controller";
 
 export default class Game {
   constructor(scene, camera, renderer) {
@@ -39,7 +40,9 @@ export default class Game {
 
   _init() {
     this._initUI();
+    this._initMoveController();
     this._initScene();
+
   }
 
   start() {
@@ -50,7 +53,6 @@ export default class Game {
         this._countTime();
       }, 1000);
     }
-
   }
 
   _initUI() {
@@ -68,13 +70,20 @@ export default class Game {
   }
 
   _initScene() {
-    this._sceneController = new SceneController(this._layout2d, this._renderer, this._camera, this._cameraController);
+    this._sceneController = new SceneController(this._layout2d, this._renderer, this._camera, this._cameraController, this._moveController);
     this._scene.add(this._sceneController);
+
+    this._sceneController.start()
+
     // 
     //     this._sceneController.on(this._sceneController.onPlayBtnClickEvent, (msg) => {
     //       this._state = STATES.FINAL;
     //       this.messageDispatcher.post(this.onFinishEvent);
     //     });
+  }
+  _initMoveController() {
+    this._moveController = new MoveController(this._camera, this._renderer);
+    this._scene.add(this._moveController);
   }
 
   onDown(x, y) {
