@@ -42,17 +42,28 @@ export default class MorphScene extends Object3D {
         this._arms = new Group();
         this.add(this._arms);
         this._leftArm = Cache.get("arm").scene;
-        this._leftArm.rotation.set(0.5, -Math.PI / 2, 0)
+        this._leftArm.rotation.set(0.5, -Math.PI / 2, 0);
         this._arms.add(this._leftArm);
+        const hideobj = this._leftArm.children.find(child => child.name.includes("ref"));
+        hideobj.visible = false;
 
         this._rightArm = Cache.get("rightArm").scene;
-        this._rightArm.rotation.set(this._leftArm.rotation.x, Math.PI / 2, 0)
-
+        const positionRef = this._rightArm.children.find(child => child.name.includes("ref"));
+        this._rightArm.rotation.set(this._leftArm.rotation.x, Math.PI / 2, 0);
         this._rightArm.scale.multiply(new Vector3(-1, 1, 1));
-        this._arms.add(this._rightArm)
+        this._arms.add(this._rightArm);
 
-        this._arms.scale.set(4, 4, 4)
-        this._arms.position.copy(this.stand.position)
+        // Calculate the offset to make the pivot point centered at positionRef.
+        const offset = new Vector3();
+        positionRef.getWorldPosition(offset);
+        offset.negate(); // Invert the offset.
+        offset.setY(-0.6);
+        offset.setZ(1);
+
+        this._arms.position.copy(offset);
+
+        this._arms.scale.set(4, 4, 4);
+
     }
 
     onDown(x, y) {
