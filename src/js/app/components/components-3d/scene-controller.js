@@ -31,7 +31,7 @@ export default class SceneController extends THREE.Object3D {
         this._stages = [
             { stage: this._stageClaySelect, enabled: true },
             { stage: this._stageSculpt, enabled: false },
-            { stage: this._stageColorMask, enabled: true },
+            { stage: this._stageColorMask, enabled: false },
             { stage: this._stageHeadParts, enabled: true },
             { stage: this._stageAccesories, enabled: true },
             { stage: this._stageMoveBody, enabled: true },
@@ -123,9 +123,11 @@ export default class SceneController extends THREE.Object3D {
             this.showNextStage();
         });
     }
+
     setClay(clay) {
         this._materialLoader._initClayMaterial(clay);
     }
+
     showNextStage() {
         if (this._currentStageId >= this._stages.length) {
             console.log('no stages left');
@@ -150,6 +152,8 @@ export default class SceneController extends THREE.Object3D {
 
     onDown(x, y) {
         this._stageSculpt.onDown(x, y);
+        this._stageHeadParts.onDown(x, y);
+        this._stageAccessorize.onDown(x, y);
         this._stageMoveBody.onDown(x, y);
         this._stageColorMask.onDown(x, y);
     }
@@ -157,12 +161,16 @@ export default class SceneController extends THREE.Object3D {
     onMove(x, y) {
         this._stageSculpt.onMove(x, y);
         this._stageMoveBody.onMove(x, y);
+        this._stageAccessorize.onMove(x, y);
+        this._stageHeadParts.onMove(x, y);
         this._stageColorMask.onMove(x, y);
     }
 
     onUp() {
         this._stageMoveBody.onUp();
         this._stageColorMask.onUp();
+        this._stageAccessorize.onUp();
+        this._stageHeadParts.onUp();
         this._stageSculpt.onUp();
     }
 
