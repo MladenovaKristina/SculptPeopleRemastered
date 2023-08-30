@@ -5,11 +5,11 @@ import assets from '../../../data/textures/3d/assets_v05.glb';
 import bg_image from '../../../data/textures/bg_image.png';
 import arm from '../../../data/textures/3d/hand_Sculpting.glb';
 
-import arianagrandehead from '../../../data/textures/3d/ArianaG.png';
+import arianagrandehead from '../../../data/textures/3d/alphamap/ArianaG_mask.png';
 import harleybody from '../../../data/textures/3d/Harley_Body_D.png';
-import harleyhead from '../../../data/textures/3d/Harley_Head_D.png';
-import mrbeanhead from '../../../data/textures/3d/MrBean.png';
-import rockhead from '../../../data/textures/3d/RockPaintMask.png';
+import harleyhead from '../../../data/textures/3d/alphamap/Harley_mask.png';
+import mrbeanhead from '../../../data/textures/3d/alphamap/MrBean_mask.png';
+import rockhead from '../../../data/textures/3d/alphamap/Rock_mask.png';
 
 import fingerprint from '../../../data/textures/3d/fingerprints.png';
 

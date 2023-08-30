@@ -64,16 +64,15 @@ export default class Game {
       this.messageDispatcher.post(this.onFinishEvent);
     });
     this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, clayid) => {
-      this._sceneController._materialLoader.setClay(clayid);
-      this._sceneController.nextScene("morph")
+      this._sceneController.setClay(clayid);
+      this._sceneController._clayScene.hide();
     });
   }
 
   _initScene() {
-    this._sceneController = new SceneController(this._layout2d, this._renderer, this._camera, this._cameraController, this._moveController);
+    this._sceneController = new SceneController(this._layout2d, this._cameraController, this._camera);
     this._scene.add(this._sceneController);
 
-    this._sceneController.start()
 
     // 
     //     this._sceneController.on(this._sceneController.onPlayBtnClickEvent, (msg) => {

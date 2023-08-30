@@ -1,23 +1,59 @@
 import * as THREE from "three";
+import Helpers from "../../../helpers/helpers";
+import { MessageDispatcher } from "../../../../utils/black-engine.module";
+import BodyMovement from "../body-movement/body-movement";
 
-export default class BodySelectionScene extends THREE.Object3D {
-    constructor() {
+export default class StageMoveBody extends THREE.Object3D {
+    constructor(body, camera) {
         super();
+
+        this.messageDispatcher = new MessageDispatcher();
+        this.onFinishEvent = 'onFinishEvent';
+
+        this._body = body;
+        this._camera = camera;
+
         this.visible = false;
 
+        this._initBodyMovoment();
+    }
 
+    _initBodyMovoment() {
+        this._bodyMovement = new BodyMovement(this._body.rig, this._camera.camera);
+        this.add(this._bodyMovement);
     }
-    start() {
-        this.visible = true; console.log("Body, visible ", this.visible)
-    }
+
 
     onDown(x, y) {
+        if (!this.visible) return;
 
+        this._bodyMovement.onDown(x, y);
     }
+
     onMove(x, y) {
+        if (!this.visible) return;
 
-
+        this._bodyMovement.onMove(x, y);
     }
-    onUp() { }
+
+    onUp() {
+        if (!this.visible) return;
+
+        this._bodyMovement.onUp();
+    }
+    show() {
+        this.visible = true;
+
+        this._body.showBodyHarley();
+        this._camera.switchToBody();
+
+        this._bodyMovement.playHint();
+    }
+
+    hide() {
+        this.visible = false;
+
+        this.messageDispatcher.post(this.onFinishEvent);
+    }
 
 }

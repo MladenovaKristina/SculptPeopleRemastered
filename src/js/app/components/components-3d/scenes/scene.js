@@ -1,16 +1,37 @@
 import ConfigurableParams from '../../../../data/configurable_params'
 
-import { Object3D, Cache, MeshPhongMaterial, DoubleSide, Vector3, PlaneGeometry, Mesh } from 'three';
+import { Object3D, Group, Cache, CylinderGeometry, MeshPhongMaterial, DoubleSide, Vector3, PlaneGeometry, Mesh } from 'three';
 export default class Environment extends Object3D {
     constructor() {
         super();
         this.visible = true;
-        this.flipX = new Vector3(-1, 1, 1);
+        this.flipX = new Vector3(1, 1, 1);
         this.init()
     }
     init() {
         this._initAssets();
         this._initBackground();
+        this._initStand();
+    }
+    _initStand() {
+        this.stand = new Group();
+        this.stand.position.x = 0;
+        this.add(this.stand);
+
+        const cylinderGeometry = new CylinderGeometry(0.1, 0.1, 5, 10);
+        const cylinderMaterial = new MeshPhongMaterial({ color: 0xdadada, metalness: 1, reflectivity: 10 });
+
+        const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
+        cylinder.position.y = -2;
+
+        this.stand.add(cylinder);
+
+        const baseGeometry = new CylinderGeometry(1.5, 1.5, 0.1, 30);
+        const base = new Mesh(baseGeometry, cylinderMaterial);
+        base.position.y = -4.5;
+
+        this.stand.add(base);
+        this.stand.scale.set(0.1, 0.1, 0.1);
     }
 
     _initAssets() {
@@ -124,13 +145,15 @@ export default class Environment extends Object3D {
 
     }
 
-    onDown(x, y) {
-
+    show() {
+        this.visible = true;
     }
-    onMove(x, y) {
 
+    hide() {
+        this.visible = false;
 
+        this.messageDispatcher.post(this.onFinishEvent);
     }
-    onUp() { }
+
 
 }
