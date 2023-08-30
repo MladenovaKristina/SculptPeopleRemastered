@@ -102,14 +102,14 @@ export default class SelectHint extends DisplayObject {
 
   }
 
-  hide() {
+  hide(callback) {
     const hideTween = new Tween({
       y: Black.stage.bounds.bottom + 250
     }, 0.2);
 
     this.add(hideTween);
 
-    hideTween.on('complete', msg => this.visible = false);
+    hideTween.on('complete', msg => { this.visible = false; callback() });
   }
 }
 

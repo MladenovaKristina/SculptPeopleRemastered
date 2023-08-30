@@ -25,11 +25,11 @@ export default class HeadParts extends Object3D {
         const screenHeightUnits = Math.abs(2 * Math.tan(this._camera.fov * 0.5) * this._camera.position.z) / 100;
         this.screenWidthUnits = Math.abs(2 * Math.tan((this._camera.fov * 0.5) * (Math.PI / 180)) * this._camera.position.z * this._camera.aspect);
 
-        const bg = new PlaneGeometry(8, 0.15);
+        const bg = new PlaneGeometry(this.screenWidthUnits, 0.);
         const mat = new MeshPhongMaterial({ color: 0x000000, transparent: true, opacity: 0.8 })
         this._bg = new Mesh(bg, mat);
 
-        this._bg.position.set(this._camera.position.x, -screenHeightUnits - 0.2 / 2, this._camera.position.z / 2)
+        this._bg.position.set(this._camera.position.x, this._camera.position.y, this._camera.position.z / 2)
         if (this._camera.fov === 40) this._bg.position.set(this._camera.position.x, -screenHeightUnits - 0.06, this._camera.position.z / 2)
 
         this.add(this._bg)
@@ -43,6 +43,7 @@ export default class HeadParts extends Object3D {
         const offset = Math.abs(((this.screenWidthUnits / 2 - (dockelements.length - 2)) / (dockelements.length + (dockelements.length - 2))) / 10);
         startX += offset;
 
+        console.log(offset)
         for (let i = 0; i < dockelements.length; i++) {
             const element = dockelements[i];
             element.rotation.set(0, 0, 0);

@@ -31,8 +31,11 @@ export default class ClayScene extends THREE.Object3D {
     }
 
     hide() {
-        this._layout2d._hideClayHint()
-        this.visible = false;
-        this.messageDispatcher.post(this.onFinishEvent);
+        this._layout2d._selectHint.hide(() => {
+            this._cameraController.switchToHead();
+            this.visible = false;
+            this.messageDispatcher.post(this.onFinishEvent);
+        })
+
     }
 }

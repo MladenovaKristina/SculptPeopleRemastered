@@ -180,9 +180,9 @@ export default class Layout2D extends DisplayObject {
     this._selectHint.show();
     this._clayscene = true;
   }
-  _hideClayHint() {
-    this._selectHint.hide();
-  }
+  // _hideClayHint() {
+  //   this._selectHint.hide();
+  // }
   _initCheers() {
     this._cheers = new CheersText();
     this.add(this._cheers)

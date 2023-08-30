@@ -93,6 +93,25 @@ export default class CameraController {
     }, 0.3, { ease: Ease.sinusoidalOut });
   }
 
+
+  switchToHead(callback) {
+    if (this._state === STATES.HEAD) return;
+    this._state = STATES.HEAD;
+
+    const position = this._getPosition();
+    const rotationX = this._getRotationX();
+
+    new UTween(this._camera.position, {
+      x: position.x,
+      y: position.y,
+      z: position.z
+    }, 0.3, { ease: Ease.sinusoidalOut });
+
+    new UTween(this._camera.rotation, {
+      x: rotationX
+    }, 0.3, { ease: Ease.sinusoidalOut });
+  }
+
   get camera() {
     return this._camera;
   }
