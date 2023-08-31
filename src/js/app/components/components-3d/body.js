@@ -1,3 +1,4 @@
+import ConfigurableParams from "../../../data/configurable_params";
 import * as THREE from "three";
 import { SkeletonUtils } from "../../../utils/skeleton-utils";
 
@@ -7,7 +8,6 @@ export default class Body extends THREE.Object3D {
     this._armature = armature;
     this._stand = stand;
     this._initBodies();
-    this.showBodyHarley();
   }
 
   _initBodies() {
@@ -18,24 +18,27 @@ export default class Body extends THREE.Object3D {
 
     this._bones = bodies.children.find(x => x.type === 'Bone');
 
-    this._initBodyHarley();
   }
 
-  _initBodyHarley() {
-    this._bodyHarley = this._bodies.children.find(x => x.name === 'b_harley');
+  _initBodyCharacter(character) {
+    let characterName;
+    if (character)
+      characterName = character;
+    else {
+      characterName = "b_";
+      characterName = characterName + ConfigurableParams.getData()['character']['select_character']['value'].toLowerCase(); console.log(characterName)
+    }
 
-    this._bodyHarley.material = new THREE.MeshStandardMaterial({
-      metalness: 0,
-      roughness: 0.4,
-      map: THREE.Cache.get('harleybody'),
-      skinning: true
-    });
-    this._bodyHarley.frustumCulled = false;
+
+    this._bodyCharacter = this._bodies.children.find(x => x.name === characterName);
+
+    this._bodyCharacter.frustumCulled = false;
+    this._bodyCharacter.visible = true;
+
   }
 
-  showBodyHarley() {
-    this._bodyHarley.visible = true;
-
+  showBodyCharacter(character) {
+    this._initBodyCharacter(character);
   }
 
   get rig() {

@@ -4,8 +4,8 @@ import { MeshPhongMaterial, NormalBlending, Cache, DoubleSide } from "three";
 
 export default class MaterialLoader {
     constructor(assets) {
-        this._assets = assets;
-
+        this._assets = assets.children[0];
+        this._armature = assets.armature;
         this._init()
     }
 
@@ -40,9 +40,9 @@ export default class MaterialLoader {
         })
         this.goldMaterial = new MeshPhongMaterial({ color: 0xFFD700 })
 
-        this._assets.traverse((child) => {
+        this._armature.traverse((child) => {
             const childName = child.name.toLowerCase()
-            child.material.side = DoubleSide;
+
             if (childName === "b_big") {
                 child.children[0].material = this.blackMaterial;
                 child.children[1].material = this.skinMaterial;
@@ -61,6 +61,12 @@ export default class MaterialLoader {
                 child.children[2].material = this.whiteMaterial;
 
             }
+        })
+
+        this._assets.traverse((child) => {
+            const childName = child.name.toLowerCase()
+            child.material.side = DoubleSide;
+
 
             if (childName === "h_harley") { child.material = new MeshPhongMaterial({ map: Cache.get("harleyhead") }) }
             if (childName === "h_tuxedo") { child.material = new MeshPhongMaterial({ map: Cache.get("mrbeanhead") }) }

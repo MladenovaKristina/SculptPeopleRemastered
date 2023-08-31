@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import ConfigurableParams from "../../../../data/configurable_params";
 import Helpers from "../../../helpers/helpers";
 import { MessageDispatcher } from "../../../../utils/black-engine.module";
 import BodyMovement from "../body-movement/body-movement";
@@ -41,10 +42,11 @@ export default class StageMoveBody extends THREE.Object3D {
 
         this._bodyMovement.onUp();
     }
-    show() {
+    show(character) {
         this.visible = true;
 
-        this._body.showBodyHarley();
+
+        this._body.showBodyCharacter(character);
         this._camera.switchToBody();
 
         this._bodyMovement.playHint();

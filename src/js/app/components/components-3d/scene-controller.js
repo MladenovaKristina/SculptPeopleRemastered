@@ -34,7 +34,7 @@ export default class SceneController extends THREE.Object3D {
             { stage: this._stageSculpt, enabled: false },
             { stage: this._stageColorMask, enabled: false },
             { stage: this._stageHeadParts, enabled: false },
-            { stage: this._stageAccessorize, enabled: true },
+            { stage: this._stageAccessorize, enabled: false },
             { stage: this._stageMoveBody, enabled: true },
         ];
 
@@ -61,7 +61,7 @@ export default class SceneController extends THREE.Object3D {
         this._body = new Body(this._environment.armature);
         this.add(this._body);
 
-        this._materialLoader = new MaterialLoader(this._environment._assets);
+        this._materialLoader = new MaterialLoader(this._environment);
     }
 
     _initClaySelect() {
