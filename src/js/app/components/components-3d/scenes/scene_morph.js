@@ -28,7 +28,7 @@ export default class StageSculpt extends THREE.Object3D {
     onDown(x, y) {
         if (!this.visible) return;
 
-        // this._drawController.onDown(x, y);
+        this._drawController.onDown(x, y);
     }
 
     onMove(x, y) {

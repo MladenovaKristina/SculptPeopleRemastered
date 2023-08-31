@@ -84,13 +84,14 @@ export default class Environment extends Object3D {
             }
             if (child.name === "Heads") { this.heads = child; }
         })
+
         const scaledown = new Vector3(0.5, 0.5, 0.5)
 
-        this.armature.position.set(0, -this.scale.y / 3, scaledown.z + 0.1);
+        this.armature.position.set(0, -scaledown.y * 0.70, scaledown.z + 0.1);
         this.armature.scale.multiply(scaledown)
         this.armature.traverse((bodies) => {
             bodies.rotation.set(0, 0, 0);
-            bodies.visible = false;
+            // bodies.visible = false;
 
             if (bodies.name.includes("b_")) {
                 this.bodies.push(bodies)
@@ -104,9 +105,10 @@ export default class Environment extends Object3D {
                 head.name == "spiderman" ||
                 head.name == "moustache") {
                 head.visible = false;
-
-                head.rotation.set(Math.PI / 2, 0, 0);
-                this.accessories.push(head)
+                if (head.name === "spiderman") head.rotation.set(0, 0, 0);
+                else
+                    head.rotation.set(Math.PI / 2, 0, 0);
+                this.accessories.push(head);
             }
             const mapping = characterMappings[selectedCharacter];
 
@@ -123,6 +125,8 @@ export default class Environment extends Object3D {
     initHeadParts() {
         this.head.traverse((child) => {
             child.name = child.name.toLowerCase()
+            child.visible = false;
+
             const childName = child.name;
             if (!childName.includes("mask") && childName != this.head.name) {
                 if (childName.includes("ring") || childName.includes("ear") || childName.includes("eye")) {
@@ -145,12 +149,13 @@ export default class Environment extends Object3D {
         });
         this.headParts = this.head.children.filter((child) => {
             const childName = child.name;
+
             return !childName.includes("mask") && childName !== this.head.name;
         });
 
         this.head.children = [];
         this.head.children = this.head.children.concat(...this.headParts, ...this.accessories)
-        // this.head.visible = true;
+        this.head.visible = true;
         this.add(this.head)
     }
 

@@ -1,3 +1,7 @@
+
+import MaterialLoader from "./material_loader";
+import { MessageDispatcher } from "../../../utils/black-engine.module";
+
 import * as THREE from "three";
 import Head from "./head";
 import Body from "./body";
@@ -7,11 +11,8 @@ import StageSculpt from "./scenes/scene_morph";
 import StageColorMask from "./scenes/stage-color-mask";
 import HeadParts from "./scenes/scene-headParts";
 import AccesoriesScene from "./scenes/scene-accessories";
+
 import StageMoveBody from "./scenes/scene-body";
-
-import MaterialLoader from "./material_loader";
-
-import { MessageDispatcher } from "../../../utils/black-engine.module";
 
 export default class SceneController extends THREE.Object3D {
     constructor(ui, cameraController, camera) {
@@ -31,9 +32,9 @@ export default class SceneController extends THREE.Object3D {
         this._stages = [
             { stage: this._stageClaySelect, enabled: true },
             { stage: this._stageSculpt, enabled: false },
-            { stage: this._stageColorMask, enabled: true },
-            { stage: this._stageHeadParts, enabled: true },
-            { stage: this._stageAccesories, enabled: false },
+            { stage: this._stageColorMask, enabled: false },
+            { stage: this._stageHeadParts, enabled: false },
+            { stage: this._stageAccessorize, enabled: true },
             { stage: this._stageMoveBody, enabled: true },
         ];
 
@@ -46,7 +47,7 @@ export default class SceneController extends THREE.Object3D {
         this._initStageSculpt();
         this._initStageColorMask();
         this._initStageHeadParts();
-        this._initAccesories();
+        this._initAccesorize();
         this._initStageMoveBody();
 
     }
@@ -94,9 +95,12 @@ export default class SceneController extends THREE.Object3D {
         });
     }
 
-    _initAccesories() {
+    _initAccesorize() {
         this._stageAccessorize = new AccesoriesScene(this._environment, this._camera);
         this.add(this._stageAccessorize);
+
+        // Make sure it's assigned to _stageAccessorize, not _stageAccessorize
+        this._stageAccessorize = this._stageAccessorize;
 
         this._stageAccessorize.messageDispatcher.on(this._stageAccessorize.onFinishEvent, msg => {
             this._currentStageId++;

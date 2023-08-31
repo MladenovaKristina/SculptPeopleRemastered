@@ -89,7 +89,6 @@ export default class HeadParts extends Object3D {
     }
 
     clickToEquip(x, y, callback) {
-        console.log("aaa")
         if (this.canMove) {
             const raycaster = new Raycaster();
             const mouse = new Vector2();
@@ -134,7 +133,7 @@ export default class HeadParts extends Object3D {
         this.canMove = true;
 
         this.clickToEquip(x, y, () => {
-            console.log("clicked")
+            this.hide();
         })
     }
 
@@ -153,8 +152,9 @@ export default class HeadParts extends Object3D {
     }
 
     hide() {
-        this.visible = false;
         this.messageDispatcher.post(this.onFinishEvent);
+        this.visible = false;
+
     }
 
 }

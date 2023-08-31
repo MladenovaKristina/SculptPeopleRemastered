@@ -1,4 +1,4 @@
-import { PlaneGeometry, Raycaster, Vector2, Mesh, MeshPhongMaterial, Object3D, Group } from "three";
+import { PlaneGeometry, Vector3, Raycaster, Vector2, Mesh, MeshPhongMaterial, Object3D, Group } from "three";
 import { MessageDispatcher } from "../../../../utils/black-engine.module";
 
 
@@ -19,13 +19,13 @@ export default class AccesoriesScene extends Object3D {
     }
 
     _init() {
+        this._initView()
         this._initDock();
         this._initDockElement();
-        this._initView()
     }
     _initView() {
-
         this.head = this._environment.head;
+        this.head.visible = true;
     }
 
     _initDock() {
@@ -33,7 +33,7 @@ export default class AccesoriesScene extends Object3D {
         this.screenWidthUnits = Math.abs(2 * Math.tan((this._camera.threeCamera.fov * 0.5) * (Math.PI / 180)) * this._camera.threeCamera.position.z * this._camera.threeCamera.aspect);
 
         const bg = new PlaneGeometry(this.screenWidthUnits, 0.15);
-        const mat = new MeshPhongMaterial({ color: 0x000000, transparent: true, opacity: 0.8 })
+        const mat = new MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 1 })
         this._bg = new Mesh(bg, mat);
 
         this._bg.position.set(0, this._camera.threeCamera.position.y - 0.15, this._camera.threeCamera.position.z / 2 + 0.1)
@@ -46,37 +46,33 @@ export default class AccesoriesScene extends Object3D {
     _initDockElement() {
 
         const dockelements = this._environment.accessories;
-        const scale = 0.03;
-        const width = this.screenWidthUnits;
-        const numberOfElements = dockelements.length + 2;
-        const rowStartPosition = this._camera.threeCamera.position.x - numberOfElements / numberOfElements;
-        console.log(rowStartPosition)
-        let element;
+        const dockScale = 0.1;
+        const scaledown = new Vector3(dockScale, dockScale, dockScale)
+        let startX = 0 - dockScale;
+        const offset = Math.abs(((this.screenWidthUnits / 2 - (dockelements.length)) / (dockelements.length + (dockelements.length - 2))) / 10);
 
-        const distanceBetweenElements = (width / 2) / (numberOfElements + 2); // Adjust this for spacing.
+        console.log(offset)
         for (let i = 0; i < dockelements.length; i++) {
-            element = dockelements[i].clone();
-            element.visible = true;
-            element.scale.set(scale, scale, scale);
-            element.rotation.x = Math.PI / 2;
-            let elementName = element.name.toLowerCase();
-            if (elementName.includes("_r")) {
-                element.scale.multiply(this.model3d.flipX)
-            }
-            if (elementName.includes("hair") && !elementName.includes("clip")) {
-                element.scale.set(scale / 10, scale / 10, scale / 10);
-                element.rotation.z = Math.PI / 2;
-            }
-            if (elementName.includes("veil")) element.scale.set(scale / 5, scale / 5, scale / 5);
-            if (elementName.includes("spiderman")) element.scale.set(scale, scale, scale);
+            const element = dockelements[i].clone();
+            element.position.set(startX + offset * i, 0 + 0.06, 0.1);
+            if (element.name.includes("spiderman")) {
+                element.rotation.set(0, 0, 0);
+                element.scale.multiply(new Vector3(0.35, 0.35, 0.35))
 
-            const pos = rowStartPosition + (distanceBetweenElements * i);
-            element.position.set(pos, 0, 0.1);
+            }
+
+            if (element.name.includes("veil")) {
+                element.scale.multiply(scaledown)
+            } else
+                element.scale.multiply(new Vector3(0.3, 0.3, 0.3))
+
+            element.visible = true;
+
+
+            this.numberOfDecorations++;
 
             this._bg.add(element)
-
         }
-
     }
     getElementAtPosition(x, y) {
         if (this.canMove) {
@@ -98,7 +94,6 @@ export default class AccesoriesScene extends Object3D {
     }
 
     clickToEquip(x, y, callback) {
-        console.log("aaa")
         if (this.canMove) {
             const raycaster = new Raycaster();
             const mouse = new Vector2();
@@ -143,7 +138,7 @@ export default class AccesoriesScene extends Object3D {
         this.canMove = true;
 
         this.clickToEquip(x, y, () => {
-            console.log("clicked")
+            this.hide();
         })
     }
 
