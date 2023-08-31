@@ -1,12 +1,13 @@
 import * as THREE from "three";
 
 export default class Head extends THREE.Object3D {
-    constructor(headasset) {
+    constructor(headasset, claymaterial) {
         super();
 
         this._head = headasset.head;
 
         this._mask = headasset.mask;
+        this._claymaterial = claymaterial;
         this._initView();
         this._initMaterials();
         this._initHeadForDrawing();

@@ -10,20 +10,19 @@ export default class MaterialLoader {
     }
 
     _initClayMaterial(clayMaterial) {
-        const colors = [
-            ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x')
-            ,
-            ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x')
-            ,
-            ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x')
-        ];
+        let colorClay;
+        if (clayMaterial === 0)
+            colorClay = ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x');
+        if (clayMaterial === 1)
 
-        this.clayMaterial = new MeshPhongMaterial({ color: colors[clayMaterial] })
-        this.skinMaterial = this.clayMaterial;
-        // this._armature.traverse((child) => {
-        //     console.log(child.material.color)
-        //     if (child.material.color === this.skinMaterial.color) this.child.material = this.clayMaterial
-        // });
+            colorClay = ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x');
+        if (clayMaterial === 2)
+
+            colorClay = ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x');
+
+        console.log(colorClay)
+        this.clayMaterial = new MeshPhongMaterial({ color: parseInt(colorClay) })
+        this.skinMaterial.color = this.clayMaterial.color;
 
         this._assets.traverse((child) => {
             const childName = child.name.toLowerCase();
@@ -74,10 +73,10 @@ export default class MaterialLoader {
             child.material.side = DoubleSide;
 
 
-            if (childName === "h_harley") { child.material = new MeshPhongMaterial({ map: Cache.get("harleyhead") }) }
-            if (childName === "h_tuxedo") { child.material = new MeshPhongMaterial({ map: Cache.get("mrbeanhead") }) }
-            if (childName === "h_bride") { child.material = new MeshPhongMaterial({ map: Cache.get("arianagrandehead") }) }
-            if (childName === "h_rock") { child.material = new MeshPhongMaterial({ map: Cache.get("rockhead") }) }
+            if (childName === "h_harley") { child.material = new MeshPhongMaterial({ map: Cache.get("harleyhead"), color: this.skinMaterial.color }) }
+            if (childName === "h_tuxedo") { child.material = new MeshPhongMaterial({ map: Cache.get("mrbeanhead"), color: this.skinMaterial.color }) }
+            if (childName === "h_bride") { child.material = new MeshPhongMaterial({ map: Cache.get("arianagrandehead"), color: this.skinMaterial.color }) }
+            if (childName === "h_rock") { child.material = new MeshPhongMaterial({ map: Cache.get("rockhead"), color: this.skinMaterial.color }) }
 
             if (childName === "Heads" || childName.includes("ear") || childName.includes("veil")) { child.material = this.whiteMaterial }
 
