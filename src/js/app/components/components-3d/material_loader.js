@@ -19,6 +19,12 @@ export default class MaterialLoader {
         ];
 
         this.clayMaterial = new MeshPhongMaterial({ color: colors[clayMaterial] })
+        this.skinMaterial = this.clayMaterial;
+        // this._armature.traverse((child) => {
+        //     console.log(child.material.color)
+        //     if (child.material.color === this.skinMaterial.color) this.child.material = this.clayMaterial
+        // });
+
         this._assets.traverse((child) => {
             const childName = child.name.toLowerCase();
             if (childName.includes("ear") && !childName.includes("ring") || childName.startsWith("h_") && !childName.includes("hair") && !childName === "h_mask") {
