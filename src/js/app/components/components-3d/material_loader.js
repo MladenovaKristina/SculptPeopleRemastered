@@ -23,42 +23,42 @@ export default class MaterialLoader {
             const childName = child.name.toLowerCase();
             if (childName.includes("ear") && !childName.includes("ring") || childName.startsWith("h_") && !childName.includes("hair") && !childName === "h_mask") {
                 child.material = this.clayMaterial;
-                console.log(child.name)
-            }
+            } if (childName.includes("veil") || child.name === "veil")
+                child.material = this.whiteMaterial;
 
         })
     }
 
     _init() {
-        const whiteMaterial = new MeshPhongMaterial({
+        this.whiteMaterial = new MeshPhongMaterial({
             color: 0xffffff, side: DoubleSide,
         })
-        const blackMaterial = new MeshPhongMaterial({ color: 0x000000 })
+        this.blackMaterial = new MeshPhongMaterial({ color: 0x000000 })
         this.skinMaterial = new MeshPhongMaterial({
             color: 0xF5F5DC, blending: NormalBlending, side: DoubleSide,
 
         })
-        const goldMaterial = new MeshPhongMaterial({ color: 0xFFD700 })
+        this.goldMaterial = new MeshPhongMaterial({ color: 0xFFD700 })
 
         this._assets.traverse((child) => {
             const childName = child.name.toLowerCase()
             child.material.side = DoubleSide;
             if (childName === "b_big") {
-                child.children[0].material = blackMaterial;
+                child.children[0].material = this.blackMaterial;
                 child.children[1].material = this.skinMaterial;
-                child.children[2].material = whiteMaterial;
+                child.children[2].material = this.whiteMaterial;
             }
             if (childName === "b_bride") {
 
                 child.children[0].material = this.skinMaterial;
-                child.children[1].material = whiteMaterial;
+                child.children[1].material = this.whiteMaterial;
 
             }
             if (childName === "b_harley") { child.material = new MeshPhongMaterial({ map: Cache.get("harleybody") }) }
             if (childName === "b_tuxedo") {
-                child.children[0].material = blackMaterial;
+                child.children[0].material = this.blackMaterial;
                 child.children[1].material = this.skinMaterial;
-                child.children[2].material = whiteMaterial;
+                child.children[2].material = this.whiteMaterial;
 
             }
 
@@ -67,28 +67,26 @@ export default class MaterialLoader {
             if (childName === "h_bride") { child.material = new MeshPhongMaterial({ map: Cache.get("arianagrandehead") }) }
             if (childName === "h_rock") { child.material = new MeshPhongMaterial({ map: Cache.get("rockhead") }) }
 
-            if (childName === "Heads" || childName.includes("ear")) { child.material = whiteMaterial }
+            if (childName === "Heads" || childName.includes("ear") || childName.includes("veil")) { child.material = this.whiteMaterial }
 
             if (childName.includes("eye")) {
-                child.material = whiteMaterial.clone();
+                child.material = this.whiteMaterial.clone();
                 child.material.map = Cache.get("arianagrandehead");
             }
 
-            if (childName.includes("mask") || childName.includes("clip") || childName === "h_mask") { child.material = whiteMaterial; }
-            if (childName.includes("ring")) { child.material = goldMaterial }
+            if (childName.includes("mask") || childName.includes("clip") || childName === "h_mask") { child.material = this.whiteMaterial; }
+            if (childName.includes("ring")) { child.material = this.goldMaterial }
 
             if (childName.includes("hair") && !childName.includes("clip") || childName === "moustache") { child.material = new MeshPhongMaterial({ color: 0x664238 }) }
 
-            if (childName === "glasses") { child.material = blackMaterial }
+            if (childName === "glasses") { child.material = this.blackMaterial }
 
             if (childName === "spiderman") { child.material = new MeshPhongMaterial({ color: 0xff0000 }) }
 
-            if (childName === "veil") { child.material = whiteMaterial }
 
             if (childName === "hair3") { child.material = new MeshPhongMaterial({ color: 0xfaf0be }) }
 
-            if (childName.includes("teeth")) { child.material = whiteMaterial; }
-
+            if (childName.includes("teeth")) { child.material = this.whiteMaterial; }
         })
 
 

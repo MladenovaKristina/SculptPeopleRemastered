@@ -5,7 +5,7 @@ export default class Environment extends Object3D {
     constructor() {
         super();
         this.visible = true;
-        this.flipX = new Vector3(1, 1, 1);
+        this.flipX = new Vector3(-1, 1, 1);
         this.init()
     }
     init() {
@@ -90,7 +90,7 @@ export default class Environment extends Object3D {
         this.armature.scale.multiply(scaledown)
         this.armature.traverse((bodies) => {
             bodies.rotation.set(0, 0, 0);
-            bodies.visible = true;
+            bodies.visible = false;
 
             if (bodies.name.includes("b_")) {
                 this.bodies.push(bodies)
@@ -103,7 +103,7 @@ export default class Environment extends Object3D {
                 head.name == "veil" ||
                 head.name == "spiderman" ||
                 head.name == "moustache") {
-                head.visible = true;
+                head.visible = false;
 
                 head.rotation.set(Math.PI / 2, 0, 0);
                 this.accessories.push(head)
@@ -122,32 +122,36 @@ export default class Environment extends Object3D {
 
     initHeadParts() {
         this.head.traverse((child) => {
-            const childName = child.name.toLowerCase();
-            child.visible = false;
+            child.name = child.name.toLowerCase()
+            const childName = child.name;
             if (!childName.includes("mask") && childName != this.head.name) {
                 if (childName.includes("ring") || childName.includes("ear") || childName.includes("eye")) {
-
+                    const child_l = child;
                     const child_r = child.clone();
+
                     child_r.name += "_r";
                     child_r.scale.multiply(this.flipX);
                     child_r.position.multiply(this.flipX);
-                    this.head.add(child_r)
 
-                    child.name += "_l";
-                    this.headParts.push(child);
-                    this.headParts.push(child_r);
+                    child_l.name += "_l";
+                    this.head.add(child_r)
                 }
-                else
-                    this.headParts.push(child);
-            } else if (childName.includes("mask")) {
+            }
+            if (childName.includes("mask")) {
                 this.mask = child;
                 this.mask.material = new MeshPhongMaterial({ color: 0xffffff })
-            }
 
+            }
+        });
+        this.headParts = this.head.children.filter((child) => {
+            const childName = child.name;
+            return !childName.includes("mask") && childName !== this.head.name;
         });
 
-        this.head.children = this.head.children.concat(...this.accessories)
-
+        this.head.children = [];
+        this.head.children = this.head.children.concat(...this.headParts, ...this.accessories)
+        // this.head.visible = true;
+        this.add(this.head)
     }
 
     _initBackground() {

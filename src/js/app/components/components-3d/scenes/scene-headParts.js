@@ -19,15 +19,13 @@ export default class HeadParts extends Object3D {
     }
 
     _init() {
+        this._initView()
         this._initDock();
         this._initDockElement();
-        this._initView()
     }
     _initView() {
-        this._environment.head.visible = true;
-        this._environment.head.position.set(0, 0, 0)
-
         this.head = this._environment.head;
+        this.head.visible = true;
     }
 
     _initDock() {
@@ -55,7 +53,7 @@ export default class HeadParts extends Object3D {
 
         console.log(offset)
         for (let i = 0; i < dockelements.length; i++) {
-            const element = dockelements[i];
+            const element = dockelements[i].clone();
             element.rotation.set(0, 0, 0);
             element.position.set(startX + offset * i, 0 + 0.07, 0.1);
             element.scale.set(dockScale, dockScale, dockScale)
