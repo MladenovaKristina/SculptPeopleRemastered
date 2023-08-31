@@ -12,7 +12,9 @@ export default class Environment extends Object3D {
         this._initAssets();
         this._initBackground();
         this._initStand();
+        this._initTallStand()
     }
+
     _initStand() {
         this.stand = new Group();
         this.stand.position.x = 0;
@@ -33,11 +35,31 @@ export default class Environment extends Object3D {
         this.stand.add(base);
         this.stand.scale.set(0.1, 0.1, 0.1);
     }
+    _initTallStand() {
+        this.tallStand = new Group();
+        this.tallStand.position.x = 0;
+        this.add(this.tallStand);
+        this.tallStand.visible = false;
+        const cylinderGeometry = new CylinderGeometry(0.1, 0.1, 10, 10);
+        const cylinderMaterial = new MeshPhongMaterial({ color: 0xdadada, metalness: 1, reflectivity: 10 });
+
+        const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
+        cylinder.position.y = -5;
+
+        this.tallStand.add(cylinder);
+
+        const baseGeometry = new CylinderGeometry(1.5, 1.5, 0.1, 30);
+        const base = new Mesh(baseGeometry, cylinderMaterial);
+        base.position.y = -9.5;
+
+        this.tallStand.add(base);
+        this.tallStand.scale.set(0.1, 0.1, 0.1);
+    }
 
     _initAssets() {
         this._assets = Cache.get("assets").scene;
         this.add(this._assets);
-        this._assets.visible = false;
+        this._assets.visible = true;
 
         const selectedCharacter = ConfigurableParams.getData()['character']['select_character']['value'];
         const characterMappings = {
@@ -62,11 +84,13 @@ export default class Environment extends Object3D {
             }
             if (child.name === "Heads") { this.heads = child; }
         })
+        const scaledown = new Vector3(0.5, 0.5, 0.5)
 
-        this.armature.position.set(0, -1.065, 0);
+        this.armature.position.set(0, -this.scale.y / 3, scaledown.z + 0.1);
+        this.armature.scale.multiply(scaledown)
         this.armature.traverse((bodies) => {
             bodies.rotation.set(0, 0, 0);
-            bodies.visible = false;
+            bodies.visible = true;
 
             if (bodies.name.includes("b_")) {
                 this.bodies.push(bodies)
@@ -79,7 +103,8 @@ export default class Environment extends Object3D {
                 head.name == "veil" ||
                 head.name == "spiderman" ||
                 head.name == "moustache") {
-                head.visible = false;
+                head.visible = true;
+
                 head.rotation.set(Math.PI / 2, 0, 0);
                 this.accessories.push(head)
             }
@@ -122,6 +147,7 @@ export default class Environment extends Object3D {
         });
 
         this.head.children = this.head.children.concat(...this.accessories)
+
     }
 
     _initBackground() {

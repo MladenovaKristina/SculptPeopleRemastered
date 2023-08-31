@@ -17,7 +17,7 @@ export default class BodyMovement extends THREE.Object3D {
   _initMovePairs() {
     this._leftHandPair = new MovePair(
       this._rig.children.find(x => x.name === 'hand_l'),
-      new THREE.Vector3(1, -1, 0),
+      new THREE.Vector3(0.5, -1, 0),
       { min: -1, max: 0.5, start: -0.4, minAngle: -50 * Math.PI / 180, maxAngle: 60 * Math.PI / 180 },
       MovePair.DIRECTIONS.VERTICALs
     );
@@ -25,7 +25,7 @@ export default class BodyMovement extends THREE.Object3D {
 
     this._rightHandPair = new MovePair(
       this._rig.children.find(x => x.name === 'hand_r'),
-      new THREE.Vector3(-1, -1, 0),
+      new THREE.Vector3(-0.5, -1, 0),
       { min: -1, max: 0.5, start: 0, minAngle: 60 * Math.PI / 180, maxAngle: -50 * Math.PI / 180 },
       MovePair.DIRECTIONS.VERTICALs
     );
@@ -33,7 +33,7 @@ export default class BodyMovement extends THREE.Object3D {
 
     this._leftLegPair = new MovePair(
       this._rig.children.find(x => x.name === 'leg_l'),
-      new THREE.Vector3(1, -2, 0),
+      new THREE.Vector3(0.5, -1, 0),
       { min: 0.1, max: 1, start: 0.3, minAngle: -5 * Math.PI / 180, maxAngle: 50 * Math.PI / 180 },
       MovePair.DIRECTIONS.HORIZONTAL
     );
@@ -41,7 +41,7 @@ export default class BodyMovement extends THREE.Object3D {
 
     this._rightLegPair = new MovePair(
       this._rig.children.find(x => x.name === 'leg_r'),
-      new THREE.Vector3(1, -2, 0),
+      new THREE.Vector3(0.5, -1, 0),
       { min: -1, max: 0, start: -0.4, minAngle: -50 * Math.PI / 180, maxAngle: 5 * Math.PI / 180 },
       MovePair.DIRECTIONS.HORIZONTAL
     );

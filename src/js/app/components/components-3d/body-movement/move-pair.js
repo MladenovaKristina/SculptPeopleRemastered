@@ -27,7 +27,7 @@ export default class MovePair extends THREE.Object3D {
 
   _initHandle() {
     this._handle = new THREE.Mesh(
-      new THREE.SphereGeometry(0.1, 16, 16),
+      new THREE.SphereGeometry(0.05, 16, 16),
       new THREE.MeshBasicMaterial({ color: 0xeeeeee, depthTest: false, depthWrite: false })
     );
     this._handle.position.copy(this._position);

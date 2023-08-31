@@ -61,7 +61,6 @@ export default class Head extends THREE.Object3D {
             color: 0xcdcdc0
         });
 
-        // makes a transparent mask copy to draw on it 
         this._maskForDrawing = this._mask.clone();
         this._maskForDrawing.position.z = 0.011;
         this._head.add(this._maskForDrawing);
@@ -95,9 +94,9 @@ export default class Head extends THREE.Object3D {
     }
 
     hideMask() {
-        //         this._mask.visible = false;
-        //         this._maskForDrawing.visible = false;
-        // 
-        //         this._eye.visible = true;
+        this._mask.visible = false;
+        this._maskForDrawing.visible = false;
+
+        this._eye.visible = true;
     }
 }

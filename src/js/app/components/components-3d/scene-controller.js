@@ -32,8 +32,8 @@ export default class SceneController extends THREE.Object3D {
             { stage: this._stageClaySelect, enabled: true },
             { stage: this._stageSculpt, enabled: false },
             { stage: this._stageColorMask, enabled: false },
-            { stage: this._stageHeadParts, enabled: true },
-            { stage: this._stageAccesories, enabled: true },
+            { stage: this._stageHeadParts, enabled: false },
+            { stage: this._stageAccesories, enabled: false },
             { stage: this._stageMoveBody, enabled: true },
         ];
 
@@ -95,7 +95,7 @@ export default class SceneController extends THREE.Object3D {
     }
 
     _initAccesories() {
-        this._stageAccessorize = new AccesoriesScene(this._environment, this._cameraController, this._camera);
+        this._stageAccessorize = new AccesoriesScene(this._environment, this._camera);
         this.add(this._stageAccessorize);
 
         this._stageAccessorize.messageDispatcher.on(this._stageAccessorize.onFinishEvent, msg => {
@@ -117,6 +117,9 @@ export default class SceneController extends THREE.Object3D {
     _initStageMoveBody() {
         this._stageMoveBody = new StageMoveBody(this._body, this._cameraController);
         this.add(this._stageMoveBody);
+
+        this._environment.stand.visible = false;
+        this._environment.tallStand.visible = true;
 
         this._stageMoveBody.messageDispatcher.on(this._stageMoveBody.onFinishEvent, msg => {
             this._currentStageId++;
@@ -144,37 +147,52 @@ export default class SceneController extends THREE.Object3D {
                 console.log('stage', this._currentStageId, 'is invalid or does not have a show method');
             }
         } else {
-            console.log('stage', this._currentStageId, 'skipped')
+            console.log('stage', this._stages[this._currentStageId].name, 'skipped')
             this._currentStageId++;
             this.showNextStage();
         }
     }
 
     onDown(x, y) {
-        this._stageSculpt.onDown(x, y);
-        this._stageHeadParts.onDown(x, y);
-        this._stageAccessorize.onDown(x, y);
-        this._stageMoveBody.onDown(x, y);
-        this._stageColorMask.onDown(x, y);
+        const currentStage = this._stages[this._currentStageId];
+        if (currentStage.enabled) {
+            const stage = currentStage.stage;
+            if (stage && typeof stage.onDown === 'function') {
+                stage.onDown(x, y);
+            } else {
+                console.log('stage', this._currentStageId, 'is invalid or does not have an onDown method');
+            }
+        } else {
+            console.log('stage', this._currentStageId, 'skipped');
+            this._currentStageId++;
+            this.showNextStage();
+        }
     }
 
     onMove(x, y) {
-        this._stageSculpt.onMove(x, y);
-        this._stageMoveBody.onMove(x, y);
-        this._stageAccessorize.onMove(x, y);
-        this._stageHeadParts.onMove(x, y);
-        this._stageColorMask.onMove(x, y);
+        const currentStage = this._stages[this._currentStageId];
+        if (currentStage.enabled) {
+            const stage = currentStage.stage;
+            if (stage && typeof stage.onMove === 'function') {
+                stage.onMove(x, y);
+            } else {
+                console.log('stage', this._currentStageId, 'is invalid or does not have an onMove method');
+            }
+        } else {
+            console.log('stage', this._currentStageId, 'skipped');
+            this._currentStageId++;
+            this.showNextStage();
+        }
     }
+
 
     onUp() {
-        this._stageMoveBody.onUp();
-        this._stageColorMask.onUp();
-        this._stageAccessorize.onUp();
-        this._stageHeadParts.onUp();
-        this._stageSculpt.onUp();
+        // this._stageMoveBody.onUp();
+        // this._stageColorMask.onUp();
+        // this._stageAccessorize.onUp();
+        // this._stageHeadParts.onUp();
+        // this._stageSculpt.onUp();
     }
 
-    onUpdate(dt) {
 
-    }
 }

@@ -2,16 +2,16 @@ import * as THREE from "three";
 import { SkeletonUtils } from "../../../utils/skeleton-utils";
 
 export default class Body extends THREE.Object3D {
-  constructor(armature) {
+  constructor(armature, stand) {
     super();
     this._armature = armature;
+    this._stand = stand;
     this._initBodies();
-
     this.showBodyHarley();
   }
 
   _initBodies() {
-    const bodies = this._bodies = SkeletonUtils.clone(THREE.Cache.get('assets').scene.children[0].children[0]);
+    const bodies = this._bodies = this._armature;
     this.add(bodies);
 
     bodies.children.forEach(body => body.visible = false);
@@ -27,7 +27,7 @@ export default class Body extends THREE.Object3D {
     this._bodyHarley.material = new THREE.MeshStandardMaterial({
       metalness: 0,
       roughness: 0.4,
-      map: THREE.Cache.get('Harley_Body_D'),
+      map: THREE.Cache.get('harleybody'),
       skinning: true
     });
     this._bodyHarley.frustumCulled = false;
@@ -36,11 +36,6 @@ export default class Body extends THREE.Object3D {
   showBodyHarley() {
     this._bodyHarley.visible = true;
 
-    const baseScale = this._bodies.scale.x;
-    const newScale = baseScale * 1;
-    this._bodies.scale.set(newScale, newScale, newScale);
-
-    this._bodies.position.y = -1.7;
   }
 
   get rig() {

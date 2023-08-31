@@ -64,8 +64,11 @@ export default class Game {
       this.messageDispatcher.post(this.onFinishEvent);
     });
     this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, clayid) => {
-      this._sceneController.setClay(clayid);
-      if (this._sceneController._clayScene.visible === true) this._sceneController._clayScene.hide();
+      if (this._sceneController._clayScene.visible === true) {
+        this._sceneController.setClay(clayid);
+
+        this._sceneController._clayScene.hide();
+      }
     });
   }
 

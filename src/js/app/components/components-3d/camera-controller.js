@@ -43,7 +43,7 @@ export default class CameraController {
       this._clayPosition = new THREE.Vector3(0.5, 0, 0.7);
 
       this._headPosition = new THREE.Vector3(0, 0, 1);
-      this._bodyPosition = new THREE.Vector3(0, -0.7, 4);
+      this._bodyPosition = new THREE.Vector3(0, -0.2, 2);
     }
     else {
       this._clayPosition = new THREE.Vector3(0.3, 0, 1);
