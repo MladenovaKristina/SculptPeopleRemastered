@@ -9,7 +9,7 @@ export default class BodyMovement extends THREE.Object3D {
 
     this._rig = rig;
     this._camera = camera;
-
+    this.visible = false;
     this._initMovePairs();
     this._initRaycaster();
   }

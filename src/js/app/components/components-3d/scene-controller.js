@@ -1,7 +1,6 @@
 
 import MaterialLoader from "./material_loader";
 import { MessageDispatcher } from "../../../utils/black-engine.module";
-
 import * as THREE from "three";
 import Head from "./head";
 import Body from "./body";
@@ -11,7 +10,7 @@ import StageSculpt from "./scenes/scene_morph";
 import StageColorMask from "./scenes/stage-color-mask";
 import HeadParts from "./scenes/scene-headParts";
 import AccesoriesScene from "./scenes/scene-accessories";
-
+import SelectDock from "./scenes/select-dock";
 import StageMoveBody from "./scenes/scene-body";
 
 export default class SceneController extends THREE.Object3D {
@@ -49,8 +48,8 @@ export default class SceneController extends THREE.Object3D {
         this._initStageHeadParts();
         this._initAccesorize();
         this._initStageMoveBody();
-
     }
+
     _initView() {
         this._environment = new Environment();
         this.add(this._environment);
@@ -82,29 +81,41 @@ export default class SceneController extends THREE.Object3D {
         this._stageSculpt.messageDispatcher.on(this._stageSculpt.onFinishEvent, msg => {
             this._currentStageId++;
             this.showNextStage();
+            this._ui._cheers.show();
+
         });
     }
 
+
+
+
+
     _initStageColorMask() {
-        this._stageColorMask = new StageColorMask(this._head, this._cameraController);
+        this._stageColorMask = new StageColorMask(this._head, this._cameraController, this._ui);
         this.add(this._stageColorMask);
 
         this._stageColorMask.messageDispatcher.on(this._stageColorMask.onFinishEvent, msg => {
+            this._ui._cheers.show();
+
             this._currentStageId++;
             this.showNextStage();
+
         });
     }
 
     _initAccesorize() {
-        this._stageAccessorize = new AccesoriesScene(this._environment, this._camera);
+        this._stageAccessorize = new AccesoriesScene(this._environment, this._camera, this._ui);
         this.add(this._stageAccessorize);
 
         // Make sure it's assigned to _stageAccessorize, not _stageAccessorize
         this._stageAccessorize = this._stageAccessorize;
 
         this._stageAccessorize.messageDispatcher.on(this._stageAccessorize.onFinishEvent, msg => {
+            this._ui._confetti.show();
             this._currentStageId++;
             this.showNextStage();
+
+
         });
     }
 
@@ -113,13 +124,15 @@ export default class SceneController extends THREE.Object3D {
         this.add(this._stageHeadParts);
 
         this._stageHeadParts.messageDispatcher.on(this._stageHeadParts.onFinishEvent, msg => {
+            this._ui._cheers.show();
+
             this._currentStageId++;
             this.showNextStage();
         });
     }
 
     _initStageMoveBody() {
-        this._stageMoveBody = new StageMoveBody(this._body, this._cameraController);
+        this._stageMoveBody = new StageMoveBody(this._body, this._cameraController, this._ui);
         this.add(this._stageMoveBody);
 
         this._environment.stand.visible = false;
@@ -191,11 +204,20 @@ export default class SceneController extends THREE.Object3D {
 
 
     onUp() {
-        // this._stageMoveBody.onUp();
-        // this._stageColorMask.onUp();
-        // this._stageAccessorize.onUp();
-        // this._stageHeadParts.onUp();
-        // this._stageSculpt.onUp();
+        const currentStage = this._stages[this._currentStageId];
+        if (currentStage.enabled) {
+            const stage = currentStage.stage;
+            if (stage && typeof stage.onDown === 'function') {
+                stage.onUp();
+            }
+            else {
+                // console.log('stage', this._currentStageId, 'is invalid or does not have an onUp method');
+            }
+        } else {
+            // console.log('stage', this._currentStageId, 'skipped');
+            this._currentStageId++;
+            this.showNextStage();
+        }
     }
 
 

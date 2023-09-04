@@ -20,17 +20,17 @@ export default class Body extends THREE.Object3D {
 
   }
 
-  _initBodyCharacter(character) {
+  _initBodyCharacter(characterId) {
+    if (this._bodyCharacter) this._bodyCharacter.visible = false;
+    console.log("character showing", characterId)
+    const bodies = ["harley", "big", "bride", "tuxedo"];
+
     let characterName;
-    if (character)
-      characterName = character;
-    else {
-      characterName = "b_";
-      characterName = characterName + ConfigurableParams.getData()['character']['select_character']['value'].toLowerCase(); console.log(characterName)
-    }
+    if (characterId)
+      characterName = "b_" + bodies[characterId];
+    console.log(bodies[characterId])
 
-
-    this._bodyCharacter = this._bodies.children.find(x => x.name === characterName);
+    this._bodyCharacter = this._bodies.children.find(x => x.name.includes(characterName));
 
     this._bodyCharacter.frustumCulled = false;
     this._bodyCharacter.visible = true;

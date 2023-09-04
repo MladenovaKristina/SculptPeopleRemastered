@@ -3,14 +3,16 @@ import { MessageDispatcher } from "../../../../utils/black-engine.module";
 import Spray from "../drawing/spray";
 import CanvasDrawController from "../drawing/canvas-draw-controller";
 import DrawController from "../drawing/draw-controller";
+import SelectDock from "./select-dock";
 
 export default class StageColorMask extends THREE.Object3D {
-    constructor(head, camera) {
+    constructor(head, camera, ui) {
         super();
 
         this.messageDispatcher = new MessageDispatcher();
         this.onFinishEvent = 'onFinishEvent';
 
+        this._ui = ui;
         this._head = head;
         this._camera = camera;
         this.visible = false;
@@ -20,6 +22,8 @@ export default class StageColorMask extends THREE.Object3D {
         this._initCanvasDrawController();
         this._initDrawController();
         this._initDrawingPlane();
+        // this._ui._initSprayDock();
+
     }
 
     _initSpray() {
@@ -40,6 +44,7 @@ export default class StageColorMask extends THREE.Object3D {
         this._canvasDrawController.messageDispatcher.on(this._canvasDrawController.onDrawEvent, msg => {
             this._canvasTexture.needsUpdate = true;
         });
+        console.log(this._canvasDrawController)
 
         // this._canvasDrawController.color = '#ff0000';
     }
@@ -61,8 +66,8 @@ export default class StageColorMask extends THREE.Object3D {
 
     onDown(x, y) {
         if (!this.visible) return;
-
         this._drawController.onDown(x, y);
+        this._spray.onDown();
     }
 
     onMove(x, y) {
@@ -72,7 +77,9 @@ export default class StageColorMask extends THREE.Object3D {
     }
 
     onUp() {
+
         if (!this.visible) return;
+        this._spray.onUp();
 
         this._drawController.onUp();
 
@@ -86,11 +93,12 @@ export default class StageColorMask extends THREE.Object3D {
     }
     show() {
         this.visible = true;
+        this._ui._showCheckmark();
+        this._ui._initSprayDock();
     }
 
     hide() {
         this.visible = false;
-
         this.messageDispatcher.post(this.onFinishEvent);
     }
 }

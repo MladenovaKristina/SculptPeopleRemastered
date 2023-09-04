@@ -54,8 +54,8 @@ export default class DrawController {
     );
 
     this._spray.position.set(
-      intersects[0].point.x + 0.05,
-      intersects[0].point.y - 0.05,
+      intersects[0].point.x,
+      intersects[0].point.y + 0.1,
       this._spray.position.z
     );
 

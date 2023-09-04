@@ -123,8 +123,6 @@ export default class HeadParts extends Object3D {
                     }
                 })
 
-
-
             }
         }
     }

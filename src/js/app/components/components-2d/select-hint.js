@@ -8,7 +8,7 @@ export default class SelectHint extends DisplayObject {
     this.position = position;
     this.scaleX = 1;
     this.scaleY = 1;
-
+    this.y = Black.stage.centerY
     this.visible = false;
   }
 
@@ -46,6 +46,7 @@ export default class SelectHint extends DisplayObject {
 
     this.clayGroup = new Graphics();
     this.clayGroup.width = bb.width;
+
     this.clayGroup.height = 100;
     this.add(this.clayGroup)
 
@@ -109,7 +110,7 @@ export default class SelectHint extends DisplayObject {
 
     this.add(hideTween);
 
-    hideTween.on('complete', msg => { this.visible = false; callback() });
+    hideTween.on('complete', msg => { this.visible = false; if (callback) callback() });
   }
 }
 

@@ -1,5 +1,4 @@
-import { Black, DisplayObject, Sprite, Graphics } from '../../../utils/black-engine.module';
-import { Tween, Easing } from '@tweenjs/tween.js';
+import { Black, DisplayObject, Sprite, Graphics, TextField, Text } from '../../../utils/black-engine.module';
 import model from '../../../data/model';
 import Helpers from '../../helpers/helpers';
 import PlayButton from './play-button';
@@ -11,10 +10,11 @@ import ReferencePhoto from './ref-photo';
 import SelectHint from './select-hint';
 import CheersText from './cheers-text';
 import Confetti from './confetti';
-import { call } from 'file-loader';
 import SprayCan from './spray';
-import ClayScene from '../components-3d/scenes/scene-clay';
+import Bodies from './bodies';
+import { call } from 'file-loader';
 // works as a main class in 2D playables
+
 export default class Layout2D extends DisplayObject {
   constructor() {
     super();
@@ -22,6 +22,7 @@ export default class Layout2D extends DisplayObject {
     this.onPlayBtnClickEvent = 'onPlayBtnClickEvent';
     this.onActionClickEvent = 'onActionClickEvent';
     this.onSelectFromDockClickEvent = 'onSelectFromDockClickEvent';
+    this.onCheckMarkSelect = 'onCheckMarkSelect';
 
     this._platform = model.platform;
     this._downloadBtn = null;
@@ -54,6 +55,8 @@ export default class Layout2D extends DisplayObject {
     this._initCheers();
     this._initConfetti();
 
+    this._initCheckMark();
+
     this.onResize();
     Black.stage.on('resize', this.onResize, this);
   }
@@ -71,11 +74,6 @@ export default class Layout2D extends DisplayObject {
     if (this._topText.visible)
       this._refPhoto.y = this._topText.y + this._topText.height + Number(ConfigurableParams.getData()["reference_photo"]["offset"]["y"]);
 
-    this._selectHint.x = bb.left;
-    this._selectHint.y = Black.stage.centerY;
-
-
-    this._selectHint._text.x = Black.stage.centerX;
 
     this._endScreen.onResize(bb);
 
@@ -168,37 +166,95 @@ export default class Layout2D extends DisplayObject {
 
 
   }
-  _initDockBG(object, callback) {
-    this.initObjectInDock(object);
-    callback()
-  }
-  initObjectInDock(object) {
+
+  _initSprayDock(callback) {
     this._objectsInDock = new SprayCan(this._bg)
-    this.add(this._objectsInDock)
+    this.add(this._objectsInDock);
+    if (callback) callback();
   }
+
+  _initBodyDock(callback) {
+    this._objectsInDock = null;
+    this._objectsInDock = new Bodies(this._bg);
+    this.add(this._objectsInDock);
+
+    if (callback) callback();
+  }
+
+  hideDock() {
+    this._objectsInDock.hide();
+    this._objectsInDock.visible = false;
+    this._objectsInDock = null;
+  }
+
+
+  _initCheckMark() {
+    this._checkMark = new Graphics();
+    this._checkMark.visible = false;
+    this._checkMark.beginPath();
+    this._checkMark.fillStyle(0x00ff00, 1);
+    this._checkMark.lineStyle(5, 0xffffff);
+    this._checkMark.roundedRect(0, 0, 120, 100, 20);
+    this._checkMark.fill();
+    this._checkMark.stroke();
+    this._checkMark.alignAnchor(0, 0.5)
+    this._checkMark.x = Black.stage.bounds.right - 120;
+    this._checkMark.y = Black.stage.bounds.height / 2;
+
+    this.add(this._checkMark);
+
+    const textValue = "✓";
+    const textColor = 0xffffff;
+    const strokeColor = 0x000000;
+    const strokeThickness = 5;
+
+
+
+    this._text = new TextField(
+      textValue,
+      'Arial',
+      textColor,
+      80
+    );
+    this._text.weight = 750;
+    this._text.strokeColor = strokeColor;
+    this._text.strokeThickness = strokeThickness;
+    this._text.alignAnchor(-0.3, -0.1);
+
+    this._checkMark.add(this._text);
+
+  }
+  _showCheckmark() {
+    this._checkMark.visible = true;
+  }
+  _hideCheckmark() {
+    this._checkMark.visible = false;
+  }
+
+  _hideClayHint() {
+    this._selectHint.hide();
+  }
+
   _startClayHint() {
     this._selectHint.show();
-    this._clayscene = true;
   }
-  // _hideClayHint() {
-  //   this._selectHint.hide();
-  // }
   _initCheers() {
     this._cheers = new CheersText();
     this.add(this._cheers)
   }
+
   _initConfetti() {
     this._confetti = new Confetti();
     this.add(this._confetti)
   }
 
   hide(object, callback) {
-    //     console.log("hiding", object)
-    //     const hideTween = new Tween({
-    //       y: Black.stage.bounds.bottom + 250
-    //     }, 0.2);
-    // 
-    //     object.add(hideTween);
+    console.log("hiding", object)
+    const hideTween = new Tween({
+      y: Black.stage.bounds.bottom + 250
+    }, 0.2);
+
+    object.add(hideTween);
     object.visible = false;
     if (callback) callback()
 
@@ -213,37 +269,44 @@ export default class Layout2D extends DisplayObject {
 
     this._endScreen.onDown(blackPos.x, blackPos.y);
 
-    this.selectObjecInDock(blackPos.x, blackPos.y)
+    this.selectObjectInDock(blackPos.x, blackPos.y)
+    if (this._checkMark.visible === true) this.selectCheckMark(blackPos.x, blackPos.y)
+
   }
 
-
-  selectSpray(x, y, callback) {
-    console.log(x, y, "spray")
-    if (callback) callback();
-  }
-
-  selectObjecInDock(x, y) {
-    let selectFrom;
-    if (this.dockScene) {
-      console.log(this._objectsInDock)
-      selectFrom = this._objectsInDock._bg.mChildren;
-    } else { selectFrom = this._selectHint.clayGroup.mChildren }
-
-    for (let i = 0; i < selectFrom.length; i++) {
-      const object = selectFrom[i];
-
-      if (x >= object.x - object.width && x <= object.x + object.width / 2
-        // && y >= object.y && y <= object.y + object.height
-      ) {
-
-        if (object.mTextureName) this.selectedObject = object.mTextureName;
-        else {
-          this.selectedObject = i
-        }
-        this.post('onSelectFromDockClickEvent', this.selectedObject)
-      }
+  selectCheckMark(x, y) {
+    if (this.isWithinBounds(x, y, this._checkMark.x, this._checkMark.y, this._checkMark.width, this._checkMark.height)) {
+      this.post('onCheckMarkSelect');
     }
+
   }
+
+  selectObjectInDock(x, y) {
+    const selectFrom = this.dockScene
+      ? this._objectsInDock._bg.mChildren
+      : this._selectHint.clayGroup.mChildren;
+
+    selectFrom.forEach((object, i) => {
+      let posY;
+      if (this._selectHint.visible === true) posY = Black.stage.centerY; else
+        posY = Black.stage.bounds.bottom - object.height;
+      if (this.isWithinBounds(x, y, object.x, posY, object.width, object.height)) {
+        this.setSelectedObject(object, i);
+        this.post('onSelectFromDockClickEvent', this.selectedObject);
+      }
+    });
+  }
+
+  isWithinBounds(x, y, centerX, centerY, halfWidth, halfHeight) {
+    const withinXBounds = x >= centerX - halfWidth && x <= centerX + halfWidth;
+    const withinYBounds = y >= centerY - halfHeight && y <= centerY + halfHeight;
+    return withinXBounds && withinYBounds;
+  }
+
+  setSelectedObject(object, index) {
+    this.selectedObject = object.mTextureName || index;
+  }
+
 
   onMove(x, y) {
     const defaultPos = { x: x, y: y };

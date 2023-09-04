@@ -1,6 +1,7 @@
 import { TextureLoader, Cache } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import assets from '../../../data/textures/3d/assets_v05.glb';
+import can from '../../../data/textures/3d/can.glb';
 
 import bg_image from '../../../data/textures/bg_image.png';
 import arm from '../../../data/textures/3d/hand_Sculpting.glb';
@@ -25,7 +26,8 @@ export default class Loader3D {
     const objects = [
       { name: 'assets', asset: assets },
       { name: 'arm', asset: arm },
-      { name: 'rightArm', asset: arm }
+      { name: 'rightArm', asset: arm },
+      { name: 'sprayCan', asset: can }
 
     ];
 

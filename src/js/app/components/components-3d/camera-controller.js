@@ -43,7 +43,7 @@ export default class CameraController {
       this._clayPosition = new THREE.Vector3(0.5, 0, 0.7);
 
       this._headPosition = new THREE.Vector3(0, 0, 1);
-      this._bodyPosition = new THREE.Vector3(0, -0.2, 2);
+      this._bodyPosition = new THREE.Vector3(0, -0.7, 2.45);
     }
     else {
       this._clayPosition = new THREE.Vector3(0.3, 0, 1);
@@ -86,11 +86,11 @@ export default class CameraController {
       x: position.x,
       y: position.y,
       z: position.z
-    }, 0.3, { ease: Ease.sinusoidalOut });
+    }, 0.8, { ease: Ease.sinusoidalOut });
 
     new UTween(this._camera.rotation, {
       x: rotationX
-    }, 0.3, { ease: Ease.sinusoidalOut });
+    }, 1, { ease: Ease.sinusoidalOut });
   }
 
 
@@ -105,11 +105,11 @@ export default class CameraController {
       x: position.x,
       y: position.y,
       z: position.z
-    }, 0.3, { ease: Ease.sinusoidalOut });
+    }, 0.4, { ease: Ease.sinusoidalOut });
 
     new UTween(this._camera.rotation, {
       x: rotationX
-    }, 0.3, { ease: Ease.sinusoidalOut });
+    }, 0.4, { ease: Ease.sinusoidalOut });
   }
 
   get camera() {

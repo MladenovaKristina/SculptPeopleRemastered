@@ -1,19 +1,21 @@
 import { PlaneGeometry, Vector3, Raycaster, Vector2, Mesh, MeshPhongMaterial, Object3D, Group } from "three";
 import { MessageDispatcher } from "../../../../utils/black-engine.module";
+import { MeshBasicMaterial } from "three";
 
-
+import { Black } from "../../../../utils/black-engine.module";
 export default class AccesoriesScene extends Object3D {
-    constructor(assets, camera) {
+    constructor(assets, camera, ui) {
         super();
 
         this.messageDispatcher = new MessageDispatcher();
         this.onFinishEvent = 'onFinishEvent';
 
         this.numberOfDecorations = 0;
-
+        this._ui = ui;
         this._environment = assets;
         this._camera = camera;
         this.visible = false;
+
         this._init();
 
     }
@@ -22,6 +24,7 @@ export default class AccesoriesScene extends Object3D {
         this._initView()
         this._initDock();
         this._initDockElement();
+
     }
     _initView() {
         this.head = this._environment.head;
@@ -114,25 +117,25 @@ export default class AccesoriesScene extends Object3D {
 
                 this.head.traverse((child) => {
                     if (child.name.toLowerCase() === selectedName) {
-
-                        selectedDecoration.visible = false;
-                        child.visible = true;
-                        selectedDecoration = null;
-                        this.numberOfDecorations--;
-                        console.log(child.name, this.numberOfDecorations, child.position
-                        )
-                        if (this.numberOfDecorations <= 0) {
-                            callback()
-
+                        if (child.visible) {
+                            // If the dock element is already equipped, unequip it
+                            selectedDecoration.visible = true;
+                            child.visible = false;
+                        } else {
+                            // Equip the dock element
+                            // selectedDecoration.visible = false;
+                            child.visible = true;
+                            if (this.numberOfDecorations <= 0) {
+                                callback();
+                            }
                         }
+                        return; // Stop traversing after the first matching child
                     }
-                })
-
-
-
+                });
             }
         }
     }
+
 
     onDown(x, y) {
         this.canMove = true;
@@ -154,9 +157,12 @@ export default class AccesoriesScene extends Object3D {
 
     show() {
         this.visible = true;
+        this._ui._showCheckmark();
     }
 
     hide() {
+        this._ui._hideCheckmark();
+
         this.visible = false;
         this.messageDispatcher.post(this.onFinishEvent);
     }
