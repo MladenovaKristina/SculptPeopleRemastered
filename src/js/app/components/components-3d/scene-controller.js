@@ -37,7 +37,6 @@ export default class SceneController extends THREE.Object3D {
             { stage: this._stageMoveBody, enabled: true },
         ];
 
-
         this.showNextStage();
     }
 
@@ -82,12 +81,8 @@ export default class SceneController extends THREE.Object3D {
             this._currentStageId++;
             this.showNextStage();
             this._ui._cheers.show();
-
         });
     }
-
-
-
 
 
     _initStageColorMask() {

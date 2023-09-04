@@ -20,12 +20,13 @@ export default class Bodies extends GameObject {
         this._bg = new Graphics();
         this._bg.beginPath();
         this._bg.fillStyle(0x000000, 0.9);
-        this._bg.rect(bb.left, bb.bottom - height, bb.width, height);
+        this._bg.rect(bb.left, bb.bottom - height - 110, bb.width, height * 2);
         this._bg.fill();
         this.add(this._bg);
+        this._bg.visible = false;
 
         const totalWidth = this._bg.width || bb.width;
-        const startY = bb.bottom - height;
+        const startY = bb.bottom - height - 100;
 
         const bodies = ["harley", "big", "bride", "tuxedo"];
 
@@ -48,6 +49,9 @@ export default class Bodies extends GameObject {
 
         this.add(hideTween);
 
-        hideTween.on('complete', msg => this.visible = false);
+        hideTween.on('complete', msg => this._bg.visible = false);
+    }
+    show() {
+        this._bg.visible = true;
     }
 }

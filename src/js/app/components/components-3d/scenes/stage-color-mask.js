@@ -94,7 +94,7 @@ export default class StageColorMask extends THREE.Object3D {
     show() {
         this.visible = true;
         this._ui._showCheckmark();
-        this._ui._initSprayDock();
+        this._ui._objectsInDock.show()
     }
 
     hide() {

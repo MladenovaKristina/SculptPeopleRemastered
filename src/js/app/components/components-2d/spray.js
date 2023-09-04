@@ -4,7 +4,6 @@ import { GameObject, Sprite, Graphics, Black, Tween, Ease } from '../../../utils
 export default class SprayCan extends GameObject {
     constructor() {
         super();
-        this.visible = false;
 
         this._text = null;
         this._container = null;
@@ -48,6 +47,8 @@ export default class SprayCan extends GameObject {
             can.x = spacing + (spacing * i)
             can.y = startY;
             this._bg.add(can);
+            this._bg.visible = false;
+
         }
     }
 
@@ -63,6 +64,6 @@ export default class SprayCan extends GameObject {
     }
 
     show() {
-        this.visible = true;
+        this._bg.visible = true;
     }
 }

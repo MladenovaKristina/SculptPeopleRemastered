@@ -33,6 +33,9 @@ export default class Layout2D extends DisplayObject {
   }
 
   onAdded() {
+    this._initSprayDock();
+    this._initBodyDock();
+
     this._tutorial = new Tutorial();
     this.add(this._tutorial);
 
@@ -177,7 +180,6 @@ export default class Layout2D extends DisplayObject {
     this._objectsInDock = null;
     this._objectsInDock = new Bodies(this._bg);
     this.add(this._objectsInDock);
-
     if (callback) callback();
   }
 
