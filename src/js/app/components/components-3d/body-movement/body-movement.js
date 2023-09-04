@@ -109,4 +109,8 @@ export default class BodyMovement extends THREE.Object3D {
       this._leftHandPair.move(0, point.y);
     });
   }
+
+  stopHint() {
+    this._hintTween.end();
+  }
 }

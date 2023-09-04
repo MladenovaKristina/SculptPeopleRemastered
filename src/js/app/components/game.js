@@ -63,6 +63,12 @@ export default class Game {
       this._state = STATES.FINAL;
       this.messageDispatcher.post(this.onFinishEvent);
     });
+
+    this._layout2d.on(this._layout2d.onGameEnd, (msg) => {
+      this._state = STATES.FINAL;
+      this.messageDispatcher.post(this.onFinishEvent);
+    });
+
     this._layout2d.on(this._layout2d.onSelectFromDockClickEvent, (msg, dockElementId) => {
       if (this._sceneController._clayScene.visible === true) {
         this._sceneController.setClay(dockElementId);
@@ -85,6 +91,9 @@ export default class Game {
       if (this._sceneController._stageColorMask.visible === true) {
         this._layout2d.hideDock();
         this._sceneController._stageColorMask.hide();
+      }
+      if (this._sceneController._stageMoveBody.visible === true) {
+        this._sceneController._stageMoveBody.hide()
       }
     });
   }

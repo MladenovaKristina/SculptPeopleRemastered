@@ -23,6 +23,7 @@ export default class Layout2D extends DisplayObject {
     this.onActionClickEvent = 'onActionClickEvent';
     this.onSelectFromDockClickEvent = 'onSelectFromDockClickEvent';
     this.onCheckMarkSelect = 'onCheckMarkSelect';
+    this.onGameEnd = 'onGameEnd';
 
     this._platform = model.platform;
     this._downloadBtn = null;
@@ -341,5 +342,15 @@ export default class Layout2D extends DisplayObject {
     }
 
     return false;
+  }
+  endGame() {
+    this._tutorial.hide()
+    this._selectHint.hide();
+    this._checkMark.visible = false;
+    this._objectsInDock.visible = false;
+    this._objectsInDock.visible = false;
+
+    this.post(this.onGameEnd);
+
   }
 }

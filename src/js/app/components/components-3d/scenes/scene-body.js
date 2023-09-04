@@ -73,8 +73,13 @@ export default class StageMoveBody extends THREE.Object3D {
     }
 
     hide() {
-        this.visible = false;
+        this._ui._cheers.show();
+        this._ui._confetti.show();
+        this._ui._hideCheckmark();
+        this._ui._objectsInDock.hide();
 
+
+        this._bodyMovement.visible = false;
         this.messageDispatcher.post(this.onFinishEvent);
     }
 

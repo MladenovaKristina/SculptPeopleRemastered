@@ -134,8 +134,7 @@ export default class SceneController extends THREE.Object3D {
         this._environment.tallStand.visible = true;
 
         this._stageMoveBody.messageDispatcher.on(this._stageMoveBody.onFinishEvent, msg => {
-            this._currentStageId++;
-            this.showNextStage();
+            this._ui.endGame()
         });
     }
 
