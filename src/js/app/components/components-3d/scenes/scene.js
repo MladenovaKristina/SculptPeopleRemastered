@@ -50,7 +50,7 @@ export default class Environment extends Object3D {
 
         const baseGeometry = new CylinderGeometry(1.5, 1.5, 0.1, 30);
         const base = new Mesh(baseGeometry, cylinderMaterial);
-        base.position.y = -9.5;
+        base.position.y = -10;
 
         this.tallStand.add(base);
         this.tallStand.scale.set(0.1, 0.1, 0.1);
