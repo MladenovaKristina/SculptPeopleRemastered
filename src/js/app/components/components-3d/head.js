@@ -1,10 +1,12 @@
 import * as THREE from "three";
+import ConfigurableParams from "../../../data/configurable_params";
 
 export default class Head extends THREE.Object3D {
     constructor(headasset, claymaterial) {
         super();
 
         this._head = headasset.head;
+        this.flipX = new THREE.Vector3(-1, 1, 1);
 
         this._mask = headasset.mask;
         this._claymaterial = claymaterial;
@@ -17,6 +19,61 @@ export default class Head extends THREE.Object3D {
     }
 
     _initView() {
+
+
+        const selectedCharacter = ConfigurableParams.getData()['character']['select_character']['value'];
+        const characterMappings = {
+            Big: { bodyName: 'b_big1', headName: 'h_rock', model: THREE.Cache.get("head_model_harley").scene.children[0] },
+            Bride: { bodyName: 'b_bride1', headName: 'h_bride', model: THREE.Cache.get("head_model_harley").scene.children[0] },
+            Harley: { bodyName: 'b_harley1', headName: 'h_harley', model: THREE.Cache.get("head_model_harley").scene.children[0] },
+            Tuxedo: { bodyName: 'b_tuxedo2', headName: 'h_tuxedo', model: THREE.Cache.get("head_model_harley").scene.children[0] }
+        };
+
+        this.head = characterMappings[selectedCharacter].model;
+        this.add(this.head);
+
+        console.log(this.head)
+        this.head.traverse((child) => {
+            if (child.isMesh && child.geometry) {
+                //why?
+                if (child.name === "Harly") {
+                    if (child.geometry.computeFaceNormals) {
+                        child.geometry.computeFaceNormals();
+                        child.geometry.computeVertexNormals();
+                    } else {
+                        console.warn("computeFaceNormals function not available on this child's geometry.");
+                    }
+                }
+
+                child.name = child.name.toLowerCase();
+                child.visible = false;
+
+                const childName = child.name;
+                if (!childName.includes("mask") && childName !== this.head.name) {
+                    if (childName.includes("ring") || childName.includes("ear") || childName.includes("eye")) {
+                        const child_l = child.clone();
+                        const child_r = child.clone();
+
+                        child_r.name += "_r";
+                        child_r.scale.multiply(this.flipX);
+                        child_r.position.multiply(this.flipX);
+
+                        child_l.name += "_l";
+                        this.head.add(child_r);
+                    }
+                }
+            }
+        });
+
+
+
+        this.headParts = this.head.children.filter((child) => {
+            const childName = child.name;
+
+            return !childName.includes("mask") && childName !== this.head.name || !childName === "Harly";
+        });
+        console.log(this.headParts)
+
         this._eye = this._head.children.find(X => X.name === 'EyeR');
     }
 

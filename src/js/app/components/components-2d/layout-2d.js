@@ -207,7 +207,7 @@ export default class Layout2D extends DisplayObject {
     this._checkMark.stroke();
     this._checkMark.alignAnchor(0, 0.5)
     this._checkMark.x = Black.stage.bounds.right - 120;
-    this._checkMark.y = Black.stage.bounds.height / 2;
+    this._checkMark.y = Black.stage.bounds.height / 2 - 100;
 
     this.add(this._checkMark);
 

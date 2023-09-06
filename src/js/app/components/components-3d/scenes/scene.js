@@ -114,6 +114,7 @@ export default class Environment extends Object3D {
 
             if (mapping && head.name === mapping.headName) {
                 this.head = head;
+                this.head.visible = false;
 
             } else if (head.name.includes("h_"))
                 head.visible = false;

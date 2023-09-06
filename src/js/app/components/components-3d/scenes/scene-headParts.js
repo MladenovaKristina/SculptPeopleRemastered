@@ -11,7 +11,7 @@ export default class HeadParts extends Object3D {
 
         this.numberOfDecorations = 0;
 
-        this._environment = assets;
+        this._head = assets;
         this._camera = camera;
         this.visible = false;
         this._init();
@@ -24,7 +24,7 @@ export default class HeadParts extends Object3D {
         this._initDockElement();
     }
     _initView() {
-        this.head = this._environment.head;
+        this.head = this._head;
         this.head.visible = true;
     }
 
@@ -45,16 +45,20 @@ export default class HeadParts extends Object3D {
 
     _initDockElement() {
 
-        const dockelements = this._environment.headParts;
-        const dockScale = this.screenWidthUnits / 2;
-        let startX = 0 - dockScale;
-        const offset = Math.abs(((this.screenWidthUnits / 2 - (dockelements.length - 2)) / (dockelements.length + (dockelements.length - 2))) / 10);
-        startX += offset * 3;
+
+        const dockelements = this._head.headParts;
+        // const dockScale = this.screenWidthUnits / 2;
+        const dockScale = 0.003;
+
+        let startX = -0.1;
+        const offset = 0.03;
+        // const offset = Math.abs(((this.screenWidthUnits / 2 - (dockelements.length - 2)) / (dockelements.length + (dockelements.length - 2))) / 10);
+        // startX += offset;
 
         console.log(offset)
         for (let i = 0; i < dockelements.length; i++) {
             const element = dockelements[i].clone();
-            element.rotation.set(0, 0, 0);
+            element.rotation.set(Math.PI / 2, 0, 0);
             element.position.set(startX + offset * i, 0 + 0.08, 0.1);
             element.scale.set(dockScale, dockScale, dockScale)
             element.visible = true;
@@ -64,8 +68,9 @@ export default class HeadParts extends Object3D {
                 element.rotation.y -= Math.PI / 2;
 
             }
-            this.numberOfDecorations++;
+            console.log(element.name, "in dock")
 
+            this.numberOfDecorations++;
             this._bg.add(element)
         }
     }

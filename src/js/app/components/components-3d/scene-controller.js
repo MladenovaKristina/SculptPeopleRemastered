@@ -102,7 +102,6 @@ export default class SceneController extends THREE.Object3D {
         this._stageAccessorize = new AccesoriesScene(this._environment, this._camera, this._ui);
         this.add(this._stageAccessorize);
 
-        // Make sure it's assigned to _stageAccessorize, not _stageAccessorize
         this._stageAccessorize = this._stageAccessorize;
 
         this._stageAccessorize.messageDispatcher.on(this._stageAccessorize.onFinishEvent, msg => {
@@ -115,7 +114,7 @@ export default class SceneController extends THREE.Object3D {
     }
 
     _initStageHeadParts() {
-        this._stageHeadParts = new HeadParts(this._environment, this._camera);
+        this._stageHeadParts = new HeadParts(this._head, this._camera);
         this.add(this._stageHeadParts);
 
         this._stageHeadParts.messageDispatcher.on(this._stageHeadParts.onFinishEvent, msg => {

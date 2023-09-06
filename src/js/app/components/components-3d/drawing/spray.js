@@ -59,7 +59,7 @@ export default class Spray extends THREE.Object3D {
 
       .onComplete(() => {
         this.idle();
-        if (this._ui._tutorial.visible === false) this._ui._tutorial.show();
+        // if (this._ui._tutorial.visible === false) this._ui._tutorial.show();
 
       })
 

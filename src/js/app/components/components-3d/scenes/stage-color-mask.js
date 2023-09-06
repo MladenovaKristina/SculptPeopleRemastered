@@ -23,6 +23,7 @@ export default class StageColorMask extends THREE.Object3D {
         this._initDrawController();
         this._initDrawingPlane();
         // this._ui._initSprayDock();
+        //why? not spraying
 
     }
 
