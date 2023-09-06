@@ -30,10 +30,10 @@ export default class SceneController extends THREE.Object3D {
 
         this._stages = [
             { stage: this._stageClaySelect, enabled: true },
-            { stage: this._stageSculpt, enabled: false },
-            { stage: this._stageColorMask, enabled: false },
-            { stage: this._stageHeadParts, enabled: false },
-            { stage: this._stageAccessorize, enabled: false },
+            { stage: this._stageSculpt, enabled: true },
+            { stage: this._stageColorMask, enabled: true },
+            { stage: this._stageHeadParts, enabled: true },
+            { stage: this._stageAccessorize, enabled: true },
             { stage: this._stageMoveBody, enabled: true },
 
         ];
