@@ -23,10 +23,10 @@ export default class Head extends THREE.Object3D {
 
         const selectedCharacter = ConfigurableParams.getData()['character']['select_character']['value'];
         const characterMappings = {
-            Big: { bodyName: 'b_big1', headName: 'h_rock', model: THREE.Cache.get("head_model_harley").scene.children[0] },
-            Bride: { bodyName: 'b_bride1', headName: 'h_bride', model: THREE.Cache.get("head_model_harley").scene.children[0] },
+            Big: { bodyName: 'b_big1', headName: 'h_rock', model: THREE.Cache.get("head_model_rock").scene.children[0] },
+            Bride: { bodyName: 'b_bride1', headName: 'h_bride', model: THREE.Cache.get("head_model_ariana").scene.children[0] },
             Harley: { bodyName: 'b_harley1', headName: 'h_harley', model: THREE.Cache.get("head_model_harley").scene.children[0] },
-            Tuxedo: { bodyName: 'b_tuxedo2', headName: 'h_tuxedo', model: THREE.Cache.get("head_model_harley").scene.children[0] }
+            Tuxedo: { bodyName: 'b_tuxedo2', headName: 'h_tuxedo', model: THREE.Cache.get("head_model_mrbean").scene.children[0] }
         };
 
         this.head = characterMappings[selectedCharacter].model;
@@ -102,6 +102,7 @@ export default class Head extends THREE.Object3D {
         if (clayMaterial === 2)
 
             colorClay = ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x');
+
         // this._head.material.color = colorClay;
         // console.log(colorClay)
         //why not change?

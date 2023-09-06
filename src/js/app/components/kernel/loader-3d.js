@@ -4,6 +4,9 @@ import assets from '../../../data/textures/3d/assets_v05.glb';
 import can from '../../../data/textures/3d/can.glb';
 
 import head_model_harley from '../../../data/textures/3d/heads/Harly_bsh.glb';
+import head_model_ariana from '../../../data/textures/3d/heads/Ariana_bsh.glb';
+import head_model_mrbean from '../../../data/textures/3d/heads/MrBin.glb';
+import head_model_rock from '../../../data/textures/3d/heads/Rock_bsh.glb';
 
 import bg_image from '../../../data/textures/bg_image.png';
 import arm from '../../../data/textures/3d/hand_Sculpting.glb';
@@ -30,8 +33,10 @@ export default class Loader3D {
       { name: 'arm', asset: arm },
       { name: 'rightArm', asset: arm },
       { name: 'sprayCan', asset: can },
-      { name: 'head_model_harley', asset: head_model_harley }
-
+      { name: 'head_model_harley', asset: head_model_harley },
+      { name: 'head_model_ariana', asset: head_model_ariana },
+      { name: 'head_model_mrbean', asset: head_model_mrbean },
+      { name: 'head_model_rock', asset: head_model_rock }
     ];
 
     const textures = [
