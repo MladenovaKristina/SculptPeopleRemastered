@@ -31,10 +31,11 @@ export default class SceneController extends THREE.Object3D {
         this._stages = [
             { stage: this._stageClaySelect, enabled: true },
             { stage: this._stageSculpt, enabled: false },
-            { stage: this._stageColorMask, enabled: true },
-            { stage: this._stageHeadParts, enabled: true },
-            { stage: this._stageAccessorize, enabled: true },
+            { stage: this._stageColorMask, enabled: false },
+            { stage: this._stageHeadParts, enabled: false },
+            { stage: this._stageAccessorize, enabled: false },
             { stage: this._stageMoveBody, enabled: true },
+
         ];
 
         this.showNextStage();
@@ -137,8 +138,10 @@ export default class SceneController extends THREE.Object3D {
         });
     }
 
+
     setClay(clay) {
         this._materialLoader._initClayMaterial(clay);
+        this._head._changeClayColor(clay)
     }
 
     showNextStage() {

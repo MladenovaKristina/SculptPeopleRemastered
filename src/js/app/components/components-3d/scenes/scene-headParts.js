@@ -29,16 +29,25 @@ export default class HeadParts extends Object3D {
     }
 
     _initDock() {
-        const screenHeightUnits = Math.abs(2 * Math.tan(this._camera.threeCamera.fov * 0.5) * this._camera.threeCamera.position.z) / 100;
-        this.screenWidthUnits = Math.abs(2 * Math.tan((this._camera.threeCamera.fov * 0.5) * (Math.PI / 180)) * this._camera.threeCamera.position.z * this._camera.threeCamera.aspect);
+        let screenHeightUnits, positionZ;
+        if (this._camera.threeCamera) {
+            positionZ = this._camera.threeCamera.position.z;
+            screenHeightUnits = Math.abs(2 * Math.tan(this._camera.threeCamera.fov * 0.5) * this._camera.threeCamera.position.z) / 100;
+
+            this.screenWidthUnits = Math.abs(2 * Math.tan((this._camera.threeCamera.fov * 0.5) * (Math.PI / 180)) * this._camera.threeCamera.position.z * this._camera.threeCamera.aspect);
+        } else {
+            positionZ = 1;
+            screenHeightUnits = 3;
+            this.screenWidthUnits = screenHeightUnits * 2
+        }
 
         const bg = new PlaneGeometry(this.screenWidthUnits, 0.15);
         const mat = new MeshPhongMaterial({ color: 0x000000, transparent: true, opacity: 0.9 })
         this._bg = new Mesh(bg, mat);
 
-        this._bg.position.set(0, this._camera.threeCamera.position.y - 0.3, this._camera.threeCamera.position.z / 2 + 0.1)
+        this._bg.position.set(0, this._camera.threeCamera.position.y - 0.3, positionZ / 2 + 0.1)
         this._bg.rotation.copy(this._camera.threeCamera.rotation * 2)
-        if (this._camera.threeCamera.fov === 40) this._bg.position.set(this._camera.threeCamera.position.x, -screenHeightUnits - 0.06, this._camera.position.z / 2)
+        if (this._camera.threeCamera.fov === 40) this._bg.position.set(this._camera.threeCamera.position.x, -screenHeightUnits - 0.06, positionZ / 2)
 
         this.add(this._bg)
     }

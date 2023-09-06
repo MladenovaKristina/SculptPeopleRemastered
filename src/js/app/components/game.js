@@ -87,12 +87,13 @@ export default class Game {
     })
 
     this._layout2d.on(this._layout2d.onCheckMarkSelect, (msg) => {
-      if (this._sceneController._stageAccessorize.visible === true) this._sceneController._stageAccessorize.hide();
+      if (this._sceneController._stageAccessorize.visible === true)
+        this._sceneController._stageAccessorize.hide();
       if (this._sceneController._stageColorMask.visible === true) {
         this._sceneController._stageColorMask.hide();
       }
       if (this._sceneController._stageMoveBody.visible === true) {
-        // this._sceneController._stageMoveBody.hide()
+        this._sceneController._stageMoveBody.hide();
       }
     });
   }

@@ -166,7 +166,7 @@ export default class Environment extends Object3D {
         backgroundMaterial.side = DoubleSide;
 
         const backgroundMesh = new Mesh(backgroundGeometry, backgroundMaterial);
-        backgroundMesh.position.set(0, 0, -15);
+        backgroundMesh.position.set(0, 2, -15);
         backgroundMesh.rotation.z = Math.PI;
         backgroundMesh.rotation.y = Math.PI;
 

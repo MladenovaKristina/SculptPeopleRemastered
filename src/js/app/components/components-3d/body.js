@@ -34,7 +34,7 @@ export default class Body extends THREE.Object3D {
 
     this._bodyCharacter.frustumCulled = false;
     this._bodyCharacter.visible = true;
-
+    this._initCharacterSize(characterName);
   }
 
   showBodyCharacter(character) {
@@ -43,5 +43,36 @@ export default class Body extends THREE.Object3D {
 
   get rig() {
     return this._bones;
+  }
+
+  _initCharacterSize(characterName) {
+    const defaultPosition = new THREE.Vector3(0, -0.35, 0.6);
+
+    const scaleup = new THREE.Vector3(0.007, 0.007, 0.007)
+    const scaledown = new THREE.Vector3(0.0035, 0.0035, 0.0035)
+
+    const defaultScale = new THREE.Vector3(0.004999999888241291, 0.004999999888241291, 0.004999999888241291);
+
+    if (characterName.includes("harley")) {
+      this._armature.scale.copy(defaultScale);
+
+      this._armature.position.y = defaultPosition.y;
+
+      this._armature.position.z = defaultPosition.z + 0.1;
+    }
+
+    if (characterName.includes("bride")) {
+      this._armature.scale.copy(scaledown);
+      this._armature.position.y = defaultPosition.y + 0.1;
+
+      this._armature.position.z = defaultPosition.z - 0.1;
+
+    }
+    if (characterName.includes("big")) {
+      this._armature.scale.copy(scaleup);
+      this._armature.position.y = defaultPosition.y - 0.1;
+      this._armature.position.z = defaultPosition.z + 0.3;
+
+    }
   }
 }

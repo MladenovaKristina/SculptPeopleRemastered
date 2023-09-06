@@ -31,8 +31,10 @@ export default class Head extends THREE.Object3D {
 
         this.head = characterMappings[selectedCharacter].model;
         this.add(this.head);
-
-        console.log(this.head)
+        if (selectedCharacter === "Harley") this._initHeadHarley();
+        this._initHeadParts();
+    }
+    _initHeadHarley() {
         this.head.traverse((child) => {
             if (child.isMesh && child.geometry) {
                 //why?
@@ -64,9 +66,9 @@ export default class Head extends THREE.Object3D {
                 }
             }
         });
+    }
 
-
-
+    _initHeadParts() {
         this.headParts = this.head.children.filter((child) => {
             const childName = child.name;
 
@@ -76,7 +78,6 @@ export default class Head extends THREE.Object3D {
 
         this._eye = this._head.children.find(X => X.name === 'EyeR');
     }
-
     _initMaterials() {
         this._head.material = new THREE.MeshStandardMaterial({
             metalness: 0,
@@ -88,6 +89,22 @@ export default class Head extends THREE.Object3D {
 
         this._head.morphTargetInfluences[0] = 0;
         this._head.morphTargetInfluences[1] = 0;
+    }
+
+    _changeClayColor(clayMaterial) {
+        let colorClay;
+
+        if (clayMaterial === 0)
+            colorClay = ConfigurableParams.getData()['clay']['clay1']['value'].replace('#', '0x');
+        if (clayMaterial === 1)
+
+            colorClay = ConfigurableParams.getData()['clay']['clay2']['value'].replace('#', '0x');
+        if (clayMaterial === 2)
+
+            colorClay = ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x');
+        // this._head.material.color = colorClay;
+        // console.log(colorClay)
+        //why not change?
     }
 
     // makes a transparent head copy to draw on it 

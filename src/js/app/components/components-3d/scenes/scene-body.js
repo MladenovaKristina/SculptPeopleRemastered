@@ -16,7 +16,7 @@ export default class StageMoveBody extends THREE.Object3D {
         this._camera = camera;
 
         this.visible = false;
-
+        this.canHide = false;
 
     }
 
@@ -38,6 +38,7 @@ export default class StageMoveBody extends THREE.Object3D {
 
     onDown(x, y) {
         if (!this.visible) return;
+        this.canHide = true;
 
         this._bodyMovement.onDown(x, y);
     }
@@ -55,13 +56,14 @@ export default class StageMoveBody extends THREE.Object3D {
     }
 
     show() {
-        this._ui._showCheckmark();
         this._ui._objectsInDock.show()
 
         this.visible = true;
         this._initBodyMovoment();
 
         this._camera.switchToBody();
+        this._ui._showCheckmark();
+
     }
 
     showChar(character) {
@@ -72,14 +74,15 @@ export default class StageMoveBody extends THREE.Object3D {
     }
 
     hide() {
-        this._ui._cheers.show();
-        this._ui._confetti.show();
-        this._ui._hideCheckmark();
-        this._ui._objectsInDock.hide();
+        if (this.canHide) {
+            this._ui._cheers.show();
+            this._ui._confetti.show();
+            this._ui._hideCheckmark();
+            this._ui._objectsInDock.hide();
 
-
-        this._bodyMovement.visible = false;
-        this.messageDispatcher.post(this.onFinishEvent);
+            this._bodyMovement.visible = false;
+            this.messageDispatcher.post(this.onFinishEvent);
+        }
     }
 
 }
