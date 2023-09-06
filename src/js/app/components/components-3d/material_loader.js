@@ -20,7 +20,6 @@ export default class MaterialLoader {
 
             colorClay = ConfigurableParams.getData()['clay']['clay3']['value'].replace('#', '0x');
 
-        console.log(colorClay)
         this.clayMaterial = new MeshPhongMaterial({ color: parseInt(colorClay) })
         this.skinMaterial.color = this.clayMaterial.color;
 
@@ -32,18 +31,19 @@ export default class MaterialLoader {
                 child.material = this.whiteMaterial;
 
         })
+
     }
 
     _init() {
         this.whiteMaterial = new MeshPhongMaterial({
             color: 0xffffff, side: DoubleSide,
         })
-        this.blackMaterial = new MeshPhongMaterial({ color: 0x000000 })
+        this.blackMaterial = new MeshPhongMaterial({ color: 0x000000, side: DoubleSide })
         this.skinMaterial = new MeshPhongMaterial({
             color: 0xF5F5DC, blending: NormalBlending, side: DoubleSide,
 
         })
-        this.goldMaterial = new MeshPhongMaterial({ color: 0xFFD700 })
+        this.goldMaterial = new MeshPhongMaterial({ color: 0xFFD700, side: DoubleSide })
 
         this._armature.traverse((child) => {
             const childName = child.name.toLowerCase()
@@ -88,7 +88,7 @@ export default class MaterialLoader {
             if (childName.includes("mask") || childName.includes("clip") || childName === "h_mask") { child.material = this.whiteMaterial; }
             if (childName.includes("ring")) { child.material = this.goldMaterial }
 
-            if (childName.includes("hair") && !childName.includes("clip") || childName === "moustache") { child.material = new MeshPhongMaterial({ color: 0x664238 }) }
+            if (childName === "hair" || childName.includes("hair") && !childName.includes("clip") || childName === "moustache") { child.material = new MeshPhongMaterial({ color: 0x664238 }) }
 
             if (childName === "glasses") { child.material = this.blackMaterial }
 

@@ -27,7 +27,7 @@ export default class StageColorMask extends THREE.Object3D {
     }
 
     _initSpray() {
-        this._spray = new Spray();
+        this._spray = new Spray(this._ui);
         this.add(this._spray);
     }
 
@@ -46,7 +46,7 @@ export default class StageColorMask extends THREE.Object3D {
         });
         console.log(this._canvasDrawController)
 
-        // this._canvasDrawController.color = '#ff0000';
+        this._canvasDrawController.color = '#ff0000';
     }
 
     _initDrawController() {
@@ -65,12 +65,14 @@ export default class StageColorMask extends THREE.Object3D {
     }
 
     onDown(x, y) {
+
         if (!this.visible) return;
         this._drawController.onDown(x, y);
         this._spray.onDown();
     }
 
     onMove(x, y) {
+
         if (!this.visible) return;
 
         this._drawController.onMove(x, y);
@@ -94,11 +96,17 @@ export default class StageColorMask extends THREE.Object3D {
     show() {
         this.visible = true;
         this._ui._showCheckmark();
-        this._ui._objectsInDock.show()
+        this._ui._sprayInDock.show()
+
     }
 
     hide() {
+        this._ui.hideSprayDock();
+        this._ui._hideCheckmark();
+
         this.visible = false;
+
+
         this.messageDispatcher.post(this.onFinishEvent);
     }
 }

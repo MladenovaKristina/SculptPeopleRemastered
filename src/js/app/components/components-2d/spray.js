@@ -20,7 +20,7 @@ export default class SprayCan extends GameObject {
         this._bg = new Graphics();
         this._bg.beginPath();
         this._bg.fillStyle(0x000000, 0.9);
-        this._bg.rect(bb.left, bb.height / 2 + height, bb.width, height);
+        this._bg.rect(bb.left, bb.height / 2 + height, bb.width, 320);
         this._bg.fill();
         this.add(this._bg);
 

@@ -42,7 +42,7 @@ export default class CameraController {
     if (Helpers.LP(false, true)) {
       this._clayPosition = new THREE.Vector3(0.5, 0, 0.7);
 
-      this._headPosition = new THREE.Vector3(0, 0, 1);
+      this._headPosition = new THREE.Vector3(0, -0.1, 1);
       this._bodyPosition = new THREE.Vector3(0, -0.7, 2.45);
     }
     else {

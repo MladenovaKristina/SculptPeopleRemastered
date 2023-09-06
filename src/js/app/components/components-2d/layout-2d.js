@@ -172,8 +172,8 @@ export default class Layout2D extends DisplayObject {
   }
 
   _initSprayDock(callback) {
-    this._objectsInDock = new SprayCan(this._bg)
-    this.add(this._objectsInDock);
+    this._sprayInDock = new SprayCan(this._bg)
+    this.add(this._sprayInDock);
     if (callback) callback();
   }
 
@@ -188,6 +188,11 @@ export default class Layout2D extends DisplayObject {
     this._objectsInDock.hide();
     this._objectsInDock.visible = false;
     this._objectsInDock = null;
+  }
+  hideSprayDock() {
+    this._sprayInDock.hide();
+    this._sprayInDock.visible = false;
+    this._sprayInDock = null;
   }
 
 
@@ -273,6 +278,8 @@ export default class Layout2D extends DisplayObject {
     this._endScreen.onDown(blackPos.x, blackPos.y);
 
     this.selectObjectInDock(blackPos.x, blackPos.y)
+    if (this._sprayInDock && this._sprayInDock.visible === true) this.selectSprayInDock(blackPos.x, blackPos.y)
+
     if (this._checkMark.visible === true) this.selectCheckMark(blackPos.x, blackPos.y)
 
   }
@@ -282,6 +289,19 @@ export default class Layout2D extends DisplayObject {
       this.post('onCheckMarkSelect');
     }
 
+  }
+  selectSprayInDock(x, y) {
+    const selectFrom = this._sprayInDock._bg.mChildren;
+
+    selectFrom.forEach((object, i) => {
+      let posY;
+      if (this._selectHint.visible === true) posY = Black.stage.centerY; else
+        posY = Black.stage.bounds.bottom - object.height;
+      if (this.isWithinBounds(x, y, object.x, posY, object.width, object.height)) {
+        this.setSelectedObject(object, i);
+        this.post('onSelectFromDockClickEvent', this.selectedObject);
+      }
+    });
   }
 
   selectObjectInDock(x, y) {

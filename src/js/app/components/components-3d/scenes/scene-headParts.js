@@ -33,10 +33,10 @@ export default class HeadParts extends Object3D {
         this.screenWidthUnits = Math.abs(2 * Math.tan((this._camera.threeCamera.fov * 0.5) * (Math.PI / 180)) * this._camera.threeCamera.position.z * this._camera.threeCamera.aspect);
 
         const bg = new PlaneGeometry(this.screenWidthUnits, 0.15);
-        const mat = new MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 1 })
+        const mat = new MeshPhongMaterial({ color: 0x000000, transparent: true, opacity: 0.9 })
         this._bg = new Mesh(bg, mat);
 
-        this._bg.position.set(0, this._camera.threeCamera.position.y - 0.15, this._camera.threeCamera.position.z / 2 + 0.1)
+        this._bg.position.set(0, this._camera.threeCamera.position.y - 0.3, this._camera.threeCamera.position.z / 2 + 0.1)
         this._bg.rotation.copy(this._camera.threeCamera.rotation * 2)
         if (this._camera.threeCamera.fov === 40) this._bg.position.set(this._camera.threeCamera.position.x, -screenHeightUnits - 0.06, this._camera.position.z / 2)
 
@@ -55,7 +55,7 @@ export default class HeadParts extends Object3D {
         for (let i = 0; i < dockelements.length; i++) {
             const element = dockelements[i].clone();
             element.rotation.set(0, 0, 0);
-            element.position.set(startX + offset * i, 0 + 0.07, 0.1);
+            element.position.set(startX + offset * i, 0 + 0.08, 0.1);
             element.scale.set(dockScale, dockScale, dockScale)
             element.visible = true;
 

@@ -55,7 +55,6 @@ export default class StageMoveBody extends THREE.Object3D {
     }
 
     show() {
-
         this._ui._showCheckmark();
         this._ui._objectsInDock.show()
 
