@@ -1,6 +1,6 @@
 import config from '../../../data/config';
 import { GameObject, Sprite, Tween, Ease } from '../../../utils/black-engine.module';
-
+import { Black } from '../../../utils/black-engine.module';
 export default class CheersText extends GameObject {
   constructor() {
     super();
@@ -20,18 +20,22 @@ export default class CheersText extends GameObject {
     this._text.visible = false;
     this._container.add(this._text);
   }
+  randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 
-  show(id, x, y) {
+  show() {
+    const id = this.randomIntFromInterval(1, 5);
     this._text.visible = true;
     this._text.scaleX = 0;
     this._text.scaleY = 0;
     this._text.alpha = 1;
     this._text.y = 0;
 
-    this._container.x = x;
-    this._container.y = y;
+    this._container.x = Black.stage.centerX;
+    this._container.y = Black.stage.centerY;
 
-    this._text.textureName = 'cheers' + (id + 1);
+    this._text.textureName = 'cheers' + (id);
     this._text.alignAnchor(0.5, 0.5);
 
     const scaleTween = new Tween({

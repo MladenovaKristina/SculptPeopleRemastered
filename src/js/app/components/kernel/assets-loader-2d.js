@@ -1,4 +1,6 @@
+import ConfigurableParams from '../../../data/configurable_params';
 import { AssetManager, GameObject } from '../../../utils/black-engine.module';
+
 import hint_mickey from '../../../data/textures/hint_mickey.png';
 import hint_simple from '../../../data/textures/hint_simple.png';
 import hint_original from '../../../data/textures/hint_original.png';
@@ -6,6 +8,8 @@ import infinity_sign from '../../../data/textures/infinity_sign.png';
 import btn_outline from '../../../data/textures/btn_outline.png';
 import btn_color from '../../../data/textures/btn_color.png';
 import btn_back from '../../../data/textures/btn_back.png';
+
+
 import cheers1 from '../../../data/textures/cheers/cheers1';
 import cheers2 from '../../../data/textures/cheers/cheers2';
 import cheers3 from '../../../data/textures/cheers/cheers3';
@@ -13,21 +17,15 @@ import cheers4 from '../../../data/textures/cheers/cheers4';
 import cheers5 from '../../../data/textures/cheers/cheers5';
 
 import confetti0 from '../../../data/textures/cheers/confetti/confetti0.png';
-import confetti1 from '../../../data/textures/cheers/confetti/confetti1.png';
-import confetti2 from '../../../data/textures/cheers/confetti/confetti2.png';
-import confetti3 from '../../../data/textures/cheers/confetti/confetti3.png';
-import confetti4 from '../../../data/textures/cheers/confetti/confetti4.png';
-import confetti5 from '../../../data/textures/cheers/confetti/confetti5.png';
-import confetti6 from '../../../data/textures/cheers/confetti/confetti6.png';
-import confetti7 from '../../../data/textures/cheers/confetti/confetti7.png';
-import confetti8 from '../../../data/textures/cheers/confetti/confetti8.png';
 
 import spray from '../../../data/textures/spray/Spray.png';
 import sprayColorPart from '../../../data/textures/spray/SprayColorPart.png';
 import spraySelected from '../../../data/textures/spray/SpraySelected.png';
 
-
-import ConfigurableParams from '../../../data/configurable_params';
+import big from '../../../data/textures/bodyicons/big.png';
+import harley from '../../../data/textures/bodyicons/harley.png';
+import bride from '../../../data/textures/bodyicons/bride.png';
+import tuxedo from '../../../data/textures/bodyicons/mrbean.png';
 
 export default class AssetsLoader2D extends GameObject {
   constructor() {
@@ -53,15 +51,6 @@ export default class AssetsLoader2D extends GameObject {
     assets.enqueueImage('btn_back', btn_back);
 
     assets.enqueueImage('confetti0', confetti0);
-    assets.enqueueImage('confetti1', confetti1);
-    assets.enqueueImage('confetti2', confetti2);
-    assets.enqueueImage('confetti3', confetti3);
-    assets.enqueueImage('confetti4', confetti4);
-    assets.enqueueImage('confetti5', confetti5);
-    assets.enqueueImage('confetti6', confetti6);
-    assets.enqueueImage('confetti7', confetti7);
-    assets.enqueueImage('confetti8', confetti8);
-
 
     assets.enqueueImage('cheers1', cheers1.url);
     assets.enqueueImage('cheers2', cheers2.url);
@@ -72,6 +61,11 @@ export default class AssetsLoader2D extends GameObject {
     assets.enqueueImage('spray', spray);
     assets.enqueueImage('sprayColorPart', sprayColorPart);
     assets.enqueueImage('spraySelected', spraySelected);
+
+    assets.enqueueImage('harley', harley);
+    assets.enqueueImage('big', big);
+    assets.enqueueImage('bride', bride);
+    assets.enqueueImage('tuxedo', tuxedo);
 
 
     assets.enqueueImage('logo', ConfigurableParams.getData()["logo_for_google"]["change_logo"]["value"]);
